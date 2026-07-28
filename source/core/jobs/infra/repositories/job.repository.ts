@@ -1,10 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { JobEntity, JobStatusEnum } from "../entity/job.entity";
-import { LessThan, MoreThan, Repository } from "typeorm";
+import { JobEntity, JobStatusEnum } from "../../../../../src/infra/queue/entity/job.entity";
+import { Repository } from "typeorm";
+import { JobRepository } from "../../domain/repositories/job.repository";
+import { GetNextPendingJobInput } from "../../domain/repositories/contract/get-next-pending-job.input";
+import { GetAllPendingJobsInput } from "../../domain/repositories/contract/get-all-pending-jobs.input";
+import { GetNextFailedJobInput } from "../../domain/repositories/contract/get-next-failed-job.input";
 
 @Injectable()
-export class JobRepository {
+export class JobRepositoryImpl implements JobRepository {
   constructor(
     @InjectRepository(JobEntity)
     private readonly repository: Repository<JobEntity>
@@ -19,13 +23,11 @@ export class JobRepository {
     return this.repository.save(job)
   }
 
-  async getAllPendingJobs(filters: {
-    type: string,
-    page?: number,
-    pageSize?: number
-  }) {
-    const { type, page = 1, pageSize = 25 } = filters
-
+  async getAllPendingJobs({
+    type, 
+    page = 1,
+    pageSize = 25
+  }: GetAllPendingJobsInput) {
     const [jobs, total] = await this.repository.findAndCount({
       where: {
         type,
@@ -44,11 +46,9 @@ export class JobRepository {
     }
   }
 
-  async getNextPendingJob(filters: {
-    type: string,
-  }) {
-    const { type } = filters
-
+  async getNextPendingJob({
+    type
+  }: GetNextPendingJobInput) {
     return await this.repository.findOne({
       where: {
         type,
@@ -60,11 +60,9 @@ export class JobRepository {
     })
   }
 
-  async getNextFailedJob(filters: {
-    type: string,
-  }) {
-    const { type } = filters
-
+  async getNextFailedJob({
+    type
+  }: GetNextFailedJobInput) {
     return this.repository
       .createQueryBuilder('job')
       .where('job.type = :type', { type })
@@ -73,26 +71,15 @@ export class JobRepository {
       .andWhere(`job.finished_at < NOW() - INTERVAL '5 minutes'`)
       .orderBy('job.created_at', 'ASC')
       .getOne()
-
-    // const { type } = filters
-    // const fiveMinutesFromNow = new Date(Date.now() + 5 * 60 * 1000)
-
-    // return await this.repository.findOne({
-    //   where: {
-    //     type,
-    //     status: JobStatusEnum.FAILED,
-    //     attempts: LessThan(3),
-    //     finished_at: LessThan(fiveMinutesFromNow)
-    //   },
-    //   order: {
-    //     created_at: 'ASC'
-    //   }
-    // })
   }
 
   async update(data: Partial<JobEntity>, id: number) {
-    return this.repository.update(id, {
+    await this.repository.update(id, {
       ...data
+    })
+
+    return await this.repository.findOneOrFail({
+      where: { id },
     })
   }
 }

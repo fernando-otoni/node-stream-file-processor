@@ -7,7 +7,6 @@ import { JobRepository } from "src/infra/queue/database/job.repository";
 @Injectable()
 export class UploadService {
   constructor(
-    private readonly queue: JobQueue,
     private readonly jobRepository: JobRepository
   ) {}
 

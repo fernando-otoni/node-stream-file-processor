@@ -1,7 +1,7 @@
-1 - Salvar metadata do arquivo no banco
-2 - Verificar duplicidade pela hash
-3 - Criar status do processamento
-4 - Persistir jobs
+OK - 1 - Salvar metadata do arquivo no banco
+OK - 2 - Verificar duplicidade pela hash
+OK - 3 - Criar status do processamento
+OK - 4 - Persistir jobs
   Parar de usar fila em memória.
 5 - Adicionar retry automático
 6 - Controlar concorrência do worker

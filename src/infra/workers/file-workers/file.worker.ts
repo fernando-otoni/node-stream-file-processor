@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { JobQueue } from "src/infra/queue/job.queue";
 import { UploadRepository } from "src/modules/upload/infra/database/repository/upload.repository";
 import { UploadStatusEnum } from "src/modules/upload/infra/database/entity/upload.entity";
-import { JobRepository } from "../../queue/database/job.repository";
+import { JobRepository } from "../../../../source/core/jobs/infra/repositories/job.repository";
 import { JobStatusEnum } from "../../queue/entity/job.entity";
 import { UploadSuccessInput } from "../dto/upload-success.input";
 import { FileProcessor } from "src/infra/processor/file.processor";
@@ -22,7 +22,7 @@ export class FileWorker implements OnModuleInit {
   }
 
   async start() {
-    while(true) {
+    while (true) {
       const job = await this.queue.getNextJob()
 
       if (!job) {
@@ -45,9 +45,6 @@ export class FileWorker implements OnModuleInit {
     })
 
     try {
-
-    const data: any = {}
-    data.clear()
       const processInfo = await this.fileProcessor.call(path)
 
       const fileAlreadyProcessed = await this.uploadRepository.findByHash(processInfo.hash)
@@ -55,7 +52,7 @@ export class FileWorker implements OnModuleInit {
         Logger.warn(`File already uploaded, File conflicted with the file with ID: ${fileAlreadyProcessed.id}`, 'Job')
 
         await this.cancelUpload({ uploadId: uploadPersisted.id, jobId })
-        return 
+        return
       }
 
       Logger.log(`HASH: ${processInfo.hash}`, 'Job')
@@ -66,7 +63,10 @@ export class FileWorker implements OnModuleInit {
       })
     } catch (error) {
       Logger.error(`Error while trying to process file ${uploadPersisted.id}`, 'Job')
-      await this.uploadFailed({ jobId: jobId, uploadId: uploadPersisted.id})
+      await this.uploadFailed({ 
+        jobId: jobId, 
+        uploadId: uploadPersisted.id 
+      })
     }
   }
 

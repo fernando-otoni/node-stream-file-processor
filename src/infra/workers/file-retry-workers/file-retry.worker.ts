@@ -40,10 +40,7 @@ export class FileRetryWorker implements OnModuleInit {
   private async reprocessJob(job: JobFileDto) {
     Logger.log(job.path)
 
-    const data: any = {}
-    data.clear()
-    
-    // await this.fileProcessor.call(payload.path)
+    await this.fileProcessor.call(payload.path)
   }
 
   private sleep(ms: number) {

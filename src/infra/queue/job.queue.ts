@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
-import { JobRepository } from "./database/job.repository";
 import { JobEntity } from "./entity/job.entity";
 import { JobFileDto } from "./job-file-processor.interface";
+import { JobRepository } from "source/core/jobs/domain/repositories/job.repository";
 
 @Injectable()
 export class JobQueue {
@@ -34,7 +34,8 @@ export class JobQueue {
   async getNextFailedJob() {
     const job = await this.jobRepository.getNextFailedJob({ type: 'FILE' })
 
-    if(!job) return
+    if(!job) 
+      return
 
     return this.toJobFileFormat(job)
   }
