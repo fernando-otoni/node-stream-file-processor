@@ -1,11 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { JobEntity, JobStatusEnum } from "../../../../../src/infra/queue/entity/job.entity";
 import { Repository } from "typeorm";
 import { JobRepository } from "../../domain/repositories/job.repository";
 import { GetNextPendingJobInput } from "../../domain/repositories/contract/get-next-pending-job.input";
 import { GetAllPendingJobsInput } from "../../domain/repositories/contract/get-all-pending-jobs.input";
 import { GetNextFailedJobInput } from "../../domain/repositories/contract/get-next-failed-job.input";
+import { JobEntity } from "../entities/job.entity";
+import { JobStatusEnum } from "../../domain/enums/job-status.enum";
 
 @Injectable()
 export class JobRepositoryImpl implements JobRepository {

@@ -1,17 +1,21 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { JobStatusEnum } from "../../domain/enums/job-status.enum";
 import type { JobPayload } from "../../domain/types/job-payload.type";
+import { JobTypesEnum } from "../../domain/enums/job-types.enum";
 
 @Entity('jobs')
 export class JobEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  type: string
-
   @Column({ type: 'jsonb' })
   payload: JobPayload
+
+  @Column({
+    type: 'enum',
+    enum: JobTypesEnum
+  })
+  type: JobTypesEnum
 
   @Column({
     type: 'enum',
@@ -33,4 +37,7 @@ export class JobEntity {
 
   @Column({ type: 'timestamptz', nullable: true })
   finished_at: Date;
+
+  @DeleteDateColumn({ type: 'timestamptz' })
+  deleted_at: Date | null;
 }

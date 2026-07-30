@@ -1,30 +1,29 @@
 import { AggregateRoot } from "source/core/shared/domain/aggregate-root";
 import { JobPayload } from "../types/job-payload.type";
 import { JobStatusEnum } from "../enums/job-status.enum";
-import { JobEntity } from "../entities/job.entity";
 
 interface JobConstructorProps {
-  id: number
+  id?: number | undefined
   type: string
   payload: JobPayload
   status: JobStatusEnum
   attempts?: number
   error?: Record<string, any>
-  created_at?: Date;
-  updated_at?: Date;
-  finished_at?: Date;
+  created_at?: Date | undefined
+  updated_at?: Date | undefined
+  finished_at?: Date | undefined
 }
 
 export class Job extends AggregateRoot {
-  id: number
+  id: number | undefined
   type: string
   payload: JobPayload
   status: JobStatusEnum
   attempts: number
   error?: Record<string, any>
-  created_at: Date 
-  updated_at: Date;
-  finished_at: Date;
+  created_at: Date | undefined
+  updated_at: Date | undefined
+  finished_at: Date | undefined
 
   constructor(props: JobConstructorProps) {
     super()
@@ -32,8 +31,12 @@ export class Job extends AggregateRoot {
     this.type = props.type
     this.payload = props.payload
     this.attempts = props.attempts ?? 0
-    this.id = props.id
-    this.id = props.id
-    this.id = props.id
+    this.created_at = props.created_at 
+    this.updated_at = props.updated_at
+    this.finished_at = props.finished_at
+  }
+
+  toJSON() {
+    return {}
   }
 }

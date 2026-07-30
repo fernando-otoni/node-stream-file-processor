@@ -1,4 +1,4 @@
-import { PaginatedResult } from "source/core/shared/interface/paginated-result.interface";
+import { PaginatedResult } from "source/core/shared/interfaces/paginated-result.interface";
 import { JobEntity } from "../entities/job.entity";
 import { GetAllPendingJobsInput } from "./contract/get-all-pending-jobs.input";
 import { GetNextPendingJobInput } from "./contract/get-next-pending-job.input";
