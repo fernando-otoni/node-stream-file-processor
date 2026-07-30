@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UploadModule } from './modules/upload/upload.module';
-import { FileWorkerModule } from './infra/workers/file.worker.module';
+import { FilesModule } from './core/files/files.module';
+import { JobsModule } from './core/jobs/jobs.module';
 
 @Module({
   imports: [
@@ -17,10 +15,10 @@ import { FileWorkerModule } from './infra/workers/file.worker.module';
       autoLoadEntities: true,
       synchronize: true
     }),
-    UploadModule,
-    FileWorkerModule
+    FilesModule,
+    JobsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
