@@ -1,3 +1,5 @@
+import { ValidationFieldError } from "../interfaces/validation-field-error.interface"
+
 export class Notification {
   errors = new Map<string, string[] | string>()
 
@@ -37,14 +39,13 @@ export class Notification {
   }
 
   toJSON() {
-    const errors: Array<string | { [key: string]: string[] }> = []
+    const errors: ValidationFieldError[] = []
 
     this.errors.forEach((value, key) => {
-      if(typeof value === 'string') {
-        errors.push(value)
-      } else {
-        errors.push({ [key]: value })
-      }
+      errors.push({
+        field: key,
+        messages: value === 'string' ? [value] : value as string[]
+      })
     })
 
     return errors

@@ -1,14 +1,17 @@
 import { FileStatusEnum } from "../enums/file-status.enum";
 
 export interface FileEntity {
-  id: number;
-  name: string;
+  id?: number | null;
+  field_name: string;
   original_name: string;
-  status: FileStatusEnum;
-  storage_path: string;
-  size: number;
+  encoding: string;
   mimetype: string;
-  hash: string;
+  path: string;
+  destination: string;
+  file_name: string;
+  size: number;
+  hash: string | null;
+  status: FileStatusEnum;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;

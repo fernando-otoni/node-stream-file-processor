@@ -1,8 +1,7 @@
 export enum FileStatusEnum {
   PENDING = 'pending',
   PROCESSING = 'processing',
-  COMPLETED = 'completed',
-  HASHED = 'hashed',
+  PROCESSED = 'processed',
   FAILED = 'failed',
   CANCELLED = 'cancelled',
 }

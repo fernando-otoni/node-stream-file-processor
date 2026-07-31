@@ -7,10 +7,34 @@ export class FileEntity {
   id: number;
 
   @Column({ nullable: true })
-  name: string;
+  field_name: string;
 
   @Column()
   original_name: string;
+
+  @Column()
+  encoding: string;
+
+  @Column()
+  mimetype: string;
+
+  @Column()
+  path: string;
+
+  @Column()
+  destination: string;
+
+  @Column()
+  file_name: string;
+
+  @Column('bigint')
+  size: number;
+
+  @Column({ 
+    length: 64, 
+    nullable: true 
+  })
+  hash: string;
 
   @Column({
     type: 'enum',
@@ -18,24 +42,15 @@ export class FileEntity {
   })
   status: FileStatusEnum;
 
-  @Column({ nullable: true })
-  storage_path: string;
-
-  @Column('bigint')
-  size: number;
-
-  @Column()
-  mimetype: string;
-
-  @Column({ length: 64, nullable: true })
-  hash: string;
-
   @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;
 
-  @DeleteDateColumn({ type: 'timestamptz' })
+  @DeleteDateColumn({ 
+    type: 'timestamptz', 
+    nullable: true 
+  })
   deleted_at: Date | null;
 }

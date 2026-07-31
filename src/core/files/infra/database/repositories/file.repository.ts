@@ -10,4 +10,8 @@ export class FileRepositoryImpl implements FileRepository {
     @InjectRepository(FileEntity)
     private readonly repository: Repository<FileEntity>
   ) { }
+
+  async save(file: FileEntity): Promise<FileEntity> {
+    return await this.repository.save(file)
+  }
 }
