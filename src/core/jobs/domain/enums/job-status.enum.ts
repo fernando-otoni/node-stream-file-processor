@@ -1,7 +1,0 @@
-export enum JobStatusEnum {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
-  DONE = 'DONE',
-  FAILED = 'FAILED',
-  CANCELLED = 'CANCELLED'
-}

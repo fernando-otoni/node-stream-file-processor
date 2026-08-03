@@ -1,5 +1,6 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from "typeorm";
 import { FileStatusEnum } from "../../../domain/enums/file-status.enum";
+import { FileJobEntity } from "./file-jobs.entity";
 
 @Entity('files')
 export class FileEntity {
@@ -42,6 +43,9 @@ export class FileEntity {
   })
   status: FileStatusEnum;
 
+  @OneToOne(() => FileJobEntity, (job) => job.file)
+  jobs: FileJobEntity
+
   @CreateDateColumn({ type: 'timestamptz' })
   created_at: Date;
 
@@ -52,5 +56,5 @@ export class FileEntity {
     type: 'timestamptz', 
     nullable: true 
   })
-  deleted_at: Date | null;
+  deleted_at: Date | undefined;
 }

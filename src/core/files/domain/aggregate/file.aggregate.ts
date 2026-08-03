@@ -1,11 +1,11 @@
 import { AggregateRoot } from "src/core/shared/domain/aggregate-root";
 import { FileStatusEnum } from "../enums/file-status.enum";
 import { UploadedFile } from "src/core/shared/domain/models/uploaded-file";
-import { FileEntity } from "../entities/file.entity";
 import { UploadedFileValidatorFactory } from "../validators/file.validator";
+import { FileEntity } from "../entities/file.entity";
 
 interface FileConstructorProps {
-  id?: number | null
+  id?: number | undefined
   field_name: string
   original_name: string
   encoding: string
@@ -18,11 +18,11 @@ interface FileConstructorProps {
   status?: FileStatusEnum
   created_at?: Date
   updated_at?: Date
-  deleted_at?: Date | null
+  deleted_at?: Date | undefined
 }
 
 export class File extends AggregateRoot {
-  id?: number | null
+  id?: number | undefined
   field_name: string
   original_name: string
   encoding: string
@@ -31,15 +31,15 @@ export class File extends AggregateRoot {
   destination: string
   file_name: string
   size: number
-  hash: string | null
+  hash: string | undefined
   status: FileStatusEnum
   created_at: Date
   updated_at: Date
-  deleted_at: Date | null
+  deleted_at: Date | undefined
 
   constructor(props: FileConstructorProps) {
     super()
-    this.id = props.id ?? null
+    this.id = props.id ?? undefined
     this.field_name = props.field_name
     this.original_name = props.original_name
     this.encoding = props.encoding
@@ -48,11 +48,11 @@ export class File extends AggregateRoot {
     this.file_name = props.file_name
     this.path = props.path
     this.size = props.size
-    this.hash = props.hash ?? null
+    this.hash = props.hash ?? undefined
     this.status = props.status ?? FileStatusEnum.PENDING
     this.created_at = props.created_at ?? new Date()
     this.updated_at = props.updated_at ?? new Date()
-    this.deleted_at = props.deleted_at ?? null
+    this.deleted_at = props.deleted_at ?? undefined
   }
 
   static createFromUploadedFile(uploadedFile: UploadedFile): File {
@@ -73,16 +73,22 @@ export class File extends AggregateRoot {
     return this.notification.hasErrors()
   }
 
-  toJSON() {
+  toJSON(): FileEntity {
     return {
+      id: this.id,
       field_name: this.field_name,
       original_name: this.original_name,
       encoding: this.encoding,
       mimetype: this.mimetype,
-      destination: this.destination,
-      filename: this.file_name,
       path: this.path,
+      destination: this.destination,
+      file_name: this.file_name,
       size: this.size,
+      hash: this.hash,
+      status: this.status,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+      deleted_at: this.deleted_at,
     }
   }
 }

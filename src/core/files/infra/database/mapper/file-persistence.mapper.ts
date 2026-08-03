@@ -13,7 +13,7 @@ export class FilePersistenceMapper {
       destination: file.destination,
       file_name: file.file_name,
       size: file.size,
-      hash: file.hash ?? null,
+      hash: file.hash,
       status: file.status,
       created_at: file.created_at,
       updated_at: file.updated_at,

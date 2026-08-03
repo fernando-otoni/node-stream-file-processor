@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FilesModule } from './core/files/files.module';
-import { JobsModule } from './core/jobs/jobs.module';
 
 @Module({
   imports: [
@@ -15,8 +14,7 @@ import { JobsModule } from './core/jobs/jobs.module';
       autoLoadEntities: true,
       synchronize: true
     }),
-    FilesModule,
-    JobsModule
+    FilesModule
   ],
   controllers: [],
   providers: [],

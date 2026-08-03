@@ -1,5 +1,0 @@
-import { UploadedFile } from "src/core/shared/domain/models/uploaded-file";
-
-export interface SaveJobInput {
-  file: UploadedFile
-}
