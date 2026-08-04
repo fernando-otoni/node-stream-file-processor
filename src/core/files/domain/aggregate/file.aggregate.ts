@@ -55,6 +55,19 @@ export class File extends AggregateRoot {
     this.deleted_at = props.deleted_at ?? undefined
   }
 
+  toQueued() {
+    if(this.status !== FileStatusEnum.PENDING) {
+      this.notification.addError({
+        error: `File cannot be queued due to current status ${this.status}`,
+        field: 'status'
+      })
+
+      return
+    }
+
+    this.status = FileStatusEnum.QUEUED
+  }
+
   static createFromUploadedFile(uploadedFile: UploadedFile): File {
     const file = new File(uploadedFile)
 
@@ -75,7 +88,26 @@ export class File extends AggregateRoot {
 
   toJSON(): FileEntity {
     return {
-      id: this.id,
+      id: this.id!,
+      field_name: this.field_name,
+      original_name: this.original_name,
+      encoding: this.encoding,
+      mimetype: this.mimetype,
+      path: this.path,
+      destination: this.destination,
+      file_name: this.file_name,
+      size: this.size,
+      hash: this.hash,
+      status: this.status,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+      deleted_at: this.deleted_at,
+    }
+  }
+
+  toEntity(): FileEntity {
+    return {
+      id: this.id!,
       field_name: this.field_name,
       original_name: this.original_name,
       encoding: this.encoding,

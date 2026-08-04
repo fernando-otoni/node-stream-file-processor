@@ -4,10 +4,13 @@ import { FileRepository } from "src/core/files/domain/repositories/file.reposito
 import { UseCase } from "src/core/shared/application/use-case.interface";
 
 @Injectable()
-export class GetFileToProcessUseCase implements UseCase<void, File> {
+export class GetNextPendingFile implements UseCase<void, File | undefined> {
   constructor(private readonly fileRepository: FileRepository) {}
   async call() {
     const file = await this.fileRepository.getFileToProcess()
+    if(!file) {
+      return
+    }
 
     const fileAggregate = new File(file)
 

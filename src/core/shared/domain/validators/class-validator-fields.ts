@@ -13,7 +13,10 @@ export abstract class ClassValidatorFields implements ValidatorFields {
         const field = error.property
 
         Object.values(error.constraints!).forEach((message) => {
-          notification.addError(message, field)
+          notification.addError({
+            error: message, 
+            field
+          })
         })
       }
     }

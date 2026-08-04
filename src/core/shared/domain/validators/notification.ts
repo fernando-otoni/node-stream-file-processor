@@ -1,9 +1,14 @@
 import { ValidationFieldError } from "../interfaces/validation-field-error.interface"
 
+interface AddErrorInput {
+  field: string
+  error: string
+}
+
 export class Notification {
   errors = new Map<string, string[] | string>()
 
-  addError(error: string, field?: string) {
+  addError({ field, error }: AddErrorInput) {
     if(field) {
       const errors = (this.errors.get(field) ?? []) as string[]
 

@@ -4,4 +4,5 @@ export enum FileStatusEnum {
   PROCESSED = 'processed',
   FAILED = 'failed',
   CANCELLED = 'cancelled',
+  QUEUED = 'queued',
 }

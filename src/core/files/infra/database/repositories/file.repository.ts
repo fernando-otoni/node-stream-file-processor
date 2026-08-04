@@ -16,8 +16,8 @@ export class FileRepositoryImpl implements FileRepository {
     return await this.repository.save(file)
   }
 
-  async getFileToProcess(): Promise<FileEntity> {
-    return this.repository.findOneOrFail({
+  async getFileToProcess(): Promise<FileEntity | null> {
+    return this.repository.findOne({
       where: {
         status: FileStatusEnum.PENDING
       },
@@ -25,5 +25,9 @@ export class FileRepositoryImpl implements FileRepository {
         created_at: 'DESC'
       }
     })
+  }
+
+  async findById(id: number): Promise<FileEntity | null> {
+    return await this.repository.findOneBy({ id })
   }
 }

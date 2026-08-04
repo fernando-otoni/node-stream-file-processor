@@ -12,7 +12,7 @@ export class FileJobRepositoryImpl implements FileJobRepository {
     private readonly repository: Repository<FileJobEntity>
   ) { }
 
-  create(data: Partial<FileJobEntity>) {
+  save(data: Partial<FileJobEntity>) {
     const job = this.repository.create({
       ...data,
       status: FileJobStatusEnum.PENDING
@@ -37,6 +37,10 @@ export class FileJobRepositoryImpl implements FileJobRepository {
       results: [],
       total: 10
     }
+  }
+
+  async getFileJobByFileId(file_id: number) {
+    return this.repository.findOneBy({ file_id })
   }
 
   // async getNextPendingJob({}: GetNextPendingJobInput) {
