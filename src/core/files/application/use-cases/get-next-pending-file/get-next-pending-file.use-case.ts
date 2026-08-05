@@ -7,7 +7,7 @@ import { UseCase } from "src/core/shared/application/use-case.interface";
 export class GetNextPendingFile implements UseCase<void, File | undefined> {
   constructor(private readonly fileRepository: FileRepository) {}
   async call() {
-    const file = await this.fileRepository.getFileToProcess()
+    const file = await this.fileRepository.getNextPendingFile()
     if(!file) {
       return
     }

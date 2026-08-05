@@ -11,6 +11,7 @@ import { FileSchedulerWorker } from "./infra/workers/file-scheduler.worker";
 import { FileJobRepository } from "./domain/repositories/file-job.repository";
 import { FileJobRepositoryImpl } from "./infra/database/repositories/file-job.repository";
 import { SetFileToQueuedUseCase } from "./application/use-cases/set-file-to-queued/set-file-to-queued.use-case";
+import { SharedModule } from "../shared/shared.module";
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { SetFileToQueuedUseCase } from "./application/use-cases/set-file-to-queu
       FileEntity,
       FileJobEntity
     ]),
-    FilesModule
+    FilesModule,
+    SharedModule
   ],
   controllers: [
     UploadController

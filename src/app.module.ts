@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FilesModule } from './core/files/files.module';
+import { SharedModule } from './core/shared/shared.module';
 
 @Module({
   imports: [
@@ -12,9 +13,11 @@ import { FilesModule } from './core/files/files.module';
       password: 'postgres',
       database: 'upload_db',
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
+      logger: 'debug'
     }),
-    FilesModule
+    FilesModule,
+    SharedModule
   ],
   controllers: [],
   providers: [],

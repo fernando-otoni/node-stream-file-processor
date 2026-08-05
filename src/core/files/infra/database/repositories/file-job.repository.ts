@@ -4,21 +4,23 @@ import { Repository } from "typeorm";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 import { FileJobEntity } from "../entities/file-jobs.entity";
 import { FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
+import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/transaction/base-repository";
+import { TransactionContext } from "src/core/shared/infra/persistence/typeorm/transaction/transaction-context";
 
 @Injectable()
-export class FileJobRepositoryImpl implements FileJobRepository {
+export class FileJobRepositoryImpl 
+extends TypeOrmRepository<FileJobEntity>
+implements FileJobRepository {
   constructor(
     @InjectRepository(FileJobEntity)
-    private readonly repository: Repository<FileJobEntity>
-  ) { }
+    repository: Repository<FileJobEntity>,
+    transactionContext: TransactionContext
+  ) { 
+    super(FileJobEntity, repository, transactionContext)
+  }
 
-  save(data: Partial<FileJobEntity>) {
-    const job = this.repository.create({
-      ...data,
-      status: FileJobStatusEnum.PENDING
-    })
-
-    return this.repository.save(job)
+  save(job: Partial<FileJobEntity>) {
+    return this.getRepository().save(job)
   }
 
   async getPendingJobs() {
@@ -40,7 +42,7 @@ export class FileJobRepositoryImpl implements FileJobRepository {
   }
 
   async getFileJobByFileId(file_id: number) {
-    return this.repository.findOneBy({ file_id })
+    return this.getRepository().findOneBy({ file_id })
   }
 
   // async getNextPendingJob({}: GetNextPendingJobInput) {
@@ -68,11 +70,11 @@ export class FileJobRepositoryImpl implements FileJobRepository {
   // }
 
   async update(data: Partial<FileJobEntity>, id: number) {
-    await this.repository.update(id, {
+    await this.getRepository().update(id, {
       ...data
     })
 
-    return await this.repository.findOneOrFail({
+    return await this.getRepository().findOneOrFail({
       where: { id },
     })
   }

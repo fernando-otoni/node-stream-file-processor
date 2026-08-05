@@ -8,46 +8,43 @@ import { FileRepository } from "src/core/files/domain/repositories/file.reposito
 import { EntityNotFoundError } from "src/core/shared/domain/errors/entity-not-found.error";
 import { File } from "src/core/files/domain/aggregate/file.aggregate";
 import { EntityConflictError } from "src/core/shared/domain/errors/entity-conflict.error";
-import { SetFileToQueuedInput } from "./set-file-to-queued.input";
+import { UnitOfWork } from "src/core/shared/application/unit-of-work.interface";
 
 @Injectable()
-export class SetFileToQueuedUseCase implements UseCase<SetFileToQueuedInput, FileJob> {
+export class SetFileToQueuedUseCase implements UseCase<void, void> {
   constructor(
     private readonly fileJobRepository: FileJobRepository,
-    private readonly fileRepository: FileRepository
-  ) {}
+    private readonly fileRepository: FileRepository,
+    private readonly unitOfWork: UnitOfWork
+  ) { }
 
-  async call({ file_id }: SetFileToQueuedInput) {
-    const file = await this.loadAndValidateFile(file_id)
+  async call() {
+    return this.unitOfWork.runInTransaction(async () => {
+      const file = await this.loadFile()
+      await this.validateFileJob(file)
 
-    file.toQueued() 
+      file.toQueued()
 
-    if(file.hasErrors()) {
-      throw new EntityValidationError(File, file.notification.toJSON())
-    }
-    
-    const fileJob = await this.persistFileJob(file_id)
+      if (file.hasErrors()) {
+        throw new EntityValidationError(File, file.notification.toJSON())
+      }
 
-    await this.fileRepository.save(file.toEntity())
+      await this.fileRepository.save(file.toEntity())
 
-    Logger.log({
-      method: `${this.constructor.name}.call()`,
-      message: `Job created successfully`,
-      data: { file_id: file_id, file_job_id: fileJob.id }
+      const fileJob = await this.persistFileJob(file.id!)
+
+      Logger.log({
+        method: `${this.constructor.name}.call()`,
+        message: `Job created successfully`,
+        data: { file_id: file.id!, file_job_id: fileJob.id }
+      })
     })
-
-    return fileJob
   }
 
-  async loadAndValidateFile(file_id: number): Promise<File> {
-    const file = await this.fileRepository.findById(file_id)
-    if(!file) {
-      throw new EntityNotFoundError(File, file_id)
-    }
-
-    const jobAlreadyExist = await this.fileJobRepository.getFileJobByFileId(file_id)
-    if(jobAlreadyExist) {
-      throw new EntityConflictError(FileJob, jobAlreadyExist.id!)
+  async loadFile(): Promise<File> {
+    const file = await this.fileRepository.getNextPendingFile()
+    if (!file) {
+      throw new EntityNotFoundError(File)
     }
 
     const fileAggrete = new File(file)
@@ -55,10 +52,17 @@ export class SetFileToQueuedUseCase implements UseCase<SetFileToQueuedInput, Fil
     return fileAggrete
   }
 
+  async validateFileJob(file: File) {
+    const jobAlreadyExist = await this.fileJobRepository.getFileJobByFileId(file.id!)
+    if (jobAlreadyExist) {
+      throw new EntityConflictError(FileJob, jobAlreadyExist.id!)
+    }
+  }
+
   async persistFileJob(file_id: number) {
     const fileJob = FileJob.create({ file_id })
 
-    if(fileJob.hasErrors()) {
+    if (fileJob.hasErrors()) {
       Logger.error({
         method: `${this.constructor.name}.call()`,
         errors: JSON.stringify(fileJob.notification.toJSON())

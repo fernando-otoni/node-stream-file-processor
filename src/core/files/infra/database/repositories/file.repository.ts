@@ -4,30 +4,38 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "../entities/files.entity";
 import { Repository } from "typeorm";
 import { FileStatusEnum } from "src/core/files/domain/enums/file-status.enum";
+import { TransactionContext } from "src/core/shared/infra/persistence/typeorm/transaction/transaction-context";
+import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/transaction/base-repository";
 
 @Injectable()
-export class FileRepositoryImpl implements FileRepository {
+export class FileRepositoryImpl
+  extends TypeOrmRepository<FileEntity>
+  implements FileRepository {
   constructor(
     @InjectRepository(FileEntity)
-    private readonly repository: Repository<FileEntity>
-  ) { }
-
-  async save(file: FileEntity): Promise<FileEntity> {
-    return await this.repository.save(file)
+    repository: Repository<FileEntity>,
+    transactionContext: TransactionContext
+  ) {
+    super(FileEntity, repository, transactionContext)
   }
 
-  async getFileToProcess(): Promise<FileEntity | null> {
-    return this.repository.findOne({
-      where: {
+  async save(file: FileEntity): Promise<FileEntity> {
+    return await this.getRepository().save(file)
+  }
+
+  async getNextPendingFile(): Promise<FileEntity | null> {
+    return this.getRepository()
+      .createQueryBuilder('file')
+      .setLock('pessimistic_write')
+      .setOnLocked('skip_locked')
+      .where('file.status = :status', {
         status: FileStatusEnum.PENDING
-      },
-      order: {
-        created_at: 'DESC'
-      }
-    })
+      })
+      .orderBy('file.created_at', 'DESC')
+      .getOne()
   }
 
   async findById(id: number): Promise<FileEntity | null> {
-    return await this.repository.findOneBy({ id })
+    return await this.getRepository().findOneBy({ id })
   }
 }
