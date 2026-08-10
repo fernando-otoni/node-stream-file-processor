@@ -38,4 +38,8 @@ export class FileRepositoryImpl
   async findById(id: number): Promise<FileEntity | null> {
     return await this.getRepository().findOneBy({ id })
   }
+
+  async findByHash(hash: string): Promise<FileEntity | null> {
+    return await this.getRepository().findOneBy({ hash })
+  }
 }

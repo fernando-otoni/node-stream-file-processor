@@ -16,6 +16,7 @@ interface FileConstructorProps {
   size: number
   hash?: string
   status?: FileStatusEnum
+  duplicate_of_file_id?: number | undefined
   created_at?: Date
   updated_at?: Date
   deleted_at?: Date | undefined
@@ -33,6 +34,7 @@ export class File extends AggregateRoot {
   size: number
   hash: string | undefined
   status: FileStatusEnum
+  duplicate_of_file_id: number | undefined
   created_at: Date
   updated_at: Date
   deleted_at: Date | undefined
@@ -68,6 +70,71 @@ export class File extends AggregateRoot {
     this.status = FileStatusEnum.QUEUED
   }
 
+  toProcessing() {
+    if(this.status !== FileStatusEnum.QUEUED) {
+      this.notification.addError({
+        error: `File cannot be processed due to current status ${this.status}`,
+        field: 'status'
+      })
+
+      return
+    }
+
+    this.status = FileStatusEnum.PROCESSING
+  }
+
+  setHash(hash: string) {
+    if(this.hash) {
+      this.notification.addError({
+        error: `Hash has already been generated`,
+        field: 'hash'
+      })
+
+      return
+    }
+
+    this.hash = hash
+  }
+
+  isDuplicateOfFile(id: number) {
+    this.duplicate_of_file_id = id
+  }
+
+  toProcessed() {
+    const hashOrDuplicateOfFileMustExist = !this.hash && !this.duplicate_of_file_id
+    if(hashOrDuplicateOfFileMustExist) {
+      this.notification.addError({
+        error: 'A processed file must have either a hash or a duplicate file reference.',
+        field: 'file'
+      })
+
+      return
+    }
+
+    this.status = FileStatusEnum.PROCESSED
+  }
+
+  toDuplicate() {
+    if(!this.duplicate_of_file_id) {
+      this.notification.addError({
+        error: `File cannot be set to duplicate while duplicate_of_file_id is null`,
+        field: 'duplicate_of_file_id'
+      })
+
+      return
+    }
+
+    this.status = FileStatusEnum.DUPLICATE
+  }
+
+  static createFromEntity(file: FileEntity) {
+    const entity = new File(file)
+
+    entity.validate(['create'])
+
+    return entity
+  }
+
   static createFromUploadedFile(uploadedFile: UploadedFile): File {
     const file = new File(uploadedFile)
 
@@ -99,6 +166,7 @@ export class File extends AggregateRoot {
       size: this.size,
       hash: this.hash,
       status: this.status,
+      duplicate_of_file_id: this.duplicate_of_file_id,
       created_at: this.created_at,
       updated_at: this.updated_at,
       deleted_at: this.deleted_at,
@@ -118,6 +186,7 @@ export class File extends AggregateRoot {
       size: this.size,
       hash: this.hash,
       status: this.status,
+      duplicate_of_file_id: this.duplicate_of_file_id,
       created_at: this.created_at,
       updated_at: this.updated_at,
       deleted_at: this.deleted_at,

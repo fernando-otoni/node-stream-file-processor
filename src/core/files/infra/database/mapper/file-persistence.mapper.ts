@@ -15,6 +15,7 @@ export class FilePersistenceMapper {
       size: file.size,
       hash: file.hash,
       status: file.status,
+      duplicate_of_file_id: file.duplicate_of_file_id,
       created_at: file.created_at,
       updated_at: file.updated_at,
       deleted_at: file.deleted_at,

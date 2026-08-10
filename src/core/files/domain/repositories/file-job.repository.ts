@@ -4,6 +4,6 @@ import { PaginatedResult } from "src/core/shared/domain/repositories/paginated-r
 export abstract class FileJobRepository {
   save: (input: Partial<FileJobEntity>) => Promise<FileJobEntity>
   update: (data: Partial<FileJobEntity>, id: number) => Promise<FileJobEntity>
-  getPendingJobs: () => Promise<PaginatedResult<FileJobEntity>>
   getFileJobByFileId: (file_id: number) => Promise<FileJobEntity | null>
+  getNextPendingFileJob: () => Promise<FileJobEntity | null>
 }

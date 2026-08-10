@@ -7,11 +7,15 @@ import { FileRepositoryImpl } from "./infra/database/repositories/file.repositor
 import { FileRepository } from './domain/repositories/file.repository'
 import { GetNextPendingFile } from "./application/use-cases/get-next-pending-file/get-next-pending-file.use-case";
 import { FileJobEntity } from "./infra/database/entities/file-jobs.entity";
-import { FileSchedulerWorker } from "./infra/workers/file-scheduler.worker";
+import { FileSchedulerWorker } from "./infra/worker/file-scheduler.worker";
 import { FileJobRepository } from "./domain/repositories/file-job.repository";
 import { FileJobRepositoryImpl } from "./infra/database/repositories/file-job.repository";
 import { SetFileToQueuedUseCase } from "./application/use-cases/set-file-to-queued/set-file-to-queued.use-case";
 import { SharedModule } from "../shared/shared.module";
+import { FileJobProcessorWorker } from "./infra/worker/file-job-processor.worker";
+import { ProcessFileJobUseCase } from "./application/use-cases/process-file-job/process-file-job.use-case";
+import { SimulacaoFinanciamentoUseCase } from "./application/use-cases/simulacao-financiamento/simulacao-financiamento.use-case";
+import { GenerateJobFileHashUseCase } from "./application/use-cases/generate-job-file-hash/generate-job-file-hash.use-case";
 
 @Module({
   imports: [
@@ -30,6 +34,10 @@ import { SharedModule } from "../shared/shared.module";
     FileSchedulerWorker,
     GetNextPendingFile,
     SetFileToQueuedUseCase,
+    FileJobProcessorWorker,
+    ProcessFileJobUseCase,
+    SimulacaoFinanciamentoUseCase,
+    GenerateJobFileHashUseCase,
     {
       provide: FileRepository,
       useClass: FileRepositoryImpl

@@ -1,6 +1,7 @@
 import { AggregateRoot } from "src/core/shared/domain/aggregate-root";
 import { FileJobStatusEnum } from "../enums/file-job-status.enum";
 import { FileJobValidatorFactory } from "../validators/file-job.validator";
+import { FileJobEntity } from "../entities/file-job.entity";
 
 interface FileJobConstructorProps {
   id?: number | null
@@ -50,12 +51,49 @@ export class FileJob extends AggregateRoot {
     return fileJob
   }
 
-  private validate(fields: string[]) {
-    const validator = FileJobValidatorFactory.create()
+  static createFromEntity(fileJob: FileJobEntity): FileJob {
+    const aggregate = new FileJob(fileJob)
 
-    validator.validate(this.notification, this, fields)
+    aggregate.validate(['create'])
+
+    return aggregate
+  }
+
+  toProcessing() {
+    if(this.status !== FileJobStatusEnum.PENDING) {
+      this.notification.addError({
+        field: 'status',
+        error: `File Job cannot be processed due to current status ${this.status}`
+      })
+
+      return
+    }
+
+    this.status = FileJobStatusEnum.PROCESSING
   }
   
+  toDone() {
+    if(this.status !== FileJobStatusEnum.PROCESSING) {
+      this.notification.addError({
+        field: 'status',
+        error: `File Job cannot be set to Done due to current status ${this.status}`
+      })
+
+      return
+    }
+
+    this.finished_at = new Date()
+    this.status = FileJobStatusEnum.DONE
+  }
+
+  toFailed() {
+    this.status = FileJobStatusEnum.FAILED
+  }
+
+  incrementAttemps() {
+    this.attempts += 1
+  }
+
   hasErrors(): boolean {
     return this.notification.hasErrors()
   }
@@ -64,7 +102,28 @@ export class FileJob extends AggregateRoot {
     this.id = id
   }
 
+  private validate(fields: string[]) {
+    const validator = FileJobValidatorFactory.create()
+
+    validator.validate(this.notification, this, fields)
+  }
+
   toJSON() {
     return {}
+  }
+
+  toEntity(): FileJobEntity {
+    return {
+      id: this.id,
+      file_id: this.file_id,
+      status: this.status,
+      attempts: this.attempts,
+      error: this.error,
+      file: undefined,
+      created_at: this.created_at,
+      updated_at: this.updated_at,
+      finished_at: this.finished_at,
+      deleted_at: this.deleted_at,
+    }
   }
 }

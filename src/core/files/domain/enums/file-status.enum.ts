@@ -5,4 +5,5 @@ export enum FileStatusEnum {
   FAILED = 'failed',
   CANCELLED = 'cancelled',
   QUEUED = 'queued',
+  DUPLICATE = 'duplicate',
 }

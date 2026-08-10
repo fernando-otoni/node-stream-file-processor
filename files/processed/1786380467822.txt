@@ -1,0 +1,1196 @@
+type: collection.insomnia.rest/5.0
+name: Bank Gateway
+meta:
+  id: wrk_c2148625ac6c4b6aa69d29e448b88d69
+  created: 1759352102466
+  modified: 1761917446948
+  description: ""
+collection:
+  - name: POP UP
+    meta:
+      id: fld_32283feeab274c5b857c7bdbc9430201
+      created: 1759352123176
+      modified: 1772112303461
+      sortKey: -1759352123176
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/pop-up-routine/sent-status/:id_campaign"
+        name: Visualizar campanha
+        meta:
+          id: req_8c55b9a249c848cbb1eafcaeab3bb98b
+          created: 1759352749082
+          modified: 1765039419188
+          isPrivate: false
+          description: ""
+          sortKey: -1759052061377.5
+        method: PATCH
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: id_campaign
+            value: "1"
+      - url: "{{ _.base_url }}/pop-up-routine/find-to-send"
+        name: Buscar campanhas
+        meta:
+          id: req_c913a3e302154b59a0496a3742135bdf
+          created: 1759511923714
+          modified: 1759511923714
+          isPrivate: false
+          description: ""
+          sortKey: -1759202101236.75
+        method: GET
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: AUTH
+    meta:
+      id: fld_9e780455b07f4fe0a5837394001a1cae
+      created: 1759352443143
+      modified: 1775591604050
+      sortKey: -1759352443143
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/auth/verification"
+        name: Verificar
+        meta:
+          id: req_f6e86401eac5452b9c6f2a730bbaf93a
+          created: 1759352449345
+          modified: 1776129666707
+          isPrivate: false
+          description: ""
+          sortKey: -1759352478636
+        method: GET
+        parameters:
+          - id: pair_2b0fdf9c58184b0fb13b8470c5217e49
+            name: cpf
+            value: "06212094144"
+            description: ""
+            disabled: false
+          - id: pair_0c4353a25dd3422b9f13c9869ae7b658
+            name: uuid_app
+            value: 35bc4465-1025-4957-8313-c700187bbc01
+            description: ""
+            disabled: false
+          - id: pair_29cc878faa434eaf9bc66375a6d1054d
+            name: device_store_id
+            value: cbc3dd88c52679fc
+            description: ""
+            disabled: false
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+            disabled: false
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/home"
+        name: Home
+        meta:
+          id: req_3ba0ef603dc34fd584f0667f6713b690
+          created: 1759352569719
+          modified: 1775069381177
+          isPrivate: false
+          description: ""
+          sortKey: -1759352309866
+        method: GET
+        parameters:
+          - id: pair_3bfb221754424ff0bbf119a8ba847000
+            name: ""
+            value: ""
+            description: ""
+            disabled: false
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+            disabled: false
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login
+        meta:
+          id: req_c1a290f3ba694d9c81240c5ab0308441
+          created: 1759511369580
+          modified: 1775767293897
+          isPrivate: false
+          description: ""
+          sortKey: -1759511369580
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"grant_type": "password",
+            	"username": "12345678909",
+            	"password": "{{ _.password }}",
+            	"client_id": "{{ _.client_id }}",
+            	"client_secret": "{{ _.client_secret }}",
+            	"app_version": "2.8.121",
+            	"device": {
+            		"uuid_app": "35bc4465-1025-4957-8313-c700187bbc01",
+            		"os": "android",
+            		"localization": "",
+            		"firebase_id": "eThW0RJTR0eGPWkWId0R-z:APA91bHkU3NNxOYCFWsWLdPK_cKRLCpDX1wataihcl_pTb-f7b0Pro1kCJlZI33OzyfL4y4YMz2RHambZYaIBON-pp9TQhaoLKTcEkNtliJcRlrmI8RpJYg",
+            		"is_physical_device": true,
+            		"android": {
+            			"id": "RP1A.200720.012",
+            			"android_id": "847367814ce6da88",
+            			"host": "21DK7914",
+            			"manufacturer": "samsung",
+            			"brand": "samsung",
+            			"model": "SM-A105M",
+            			"device": "a10",
+            			"product": "a10ub"
+            		},
+            		"ios": {
+            			"name": null,
+            			"model": null,
+            			"localized_model": null,
+            			"identifier_for_vendor": null,
+            			"uts_name_machine": null
+            		}
+            	}
+            }
+        headers:
+          - name: user-agent
+            value: Dart/3.8 (dart:io)
+            id: pair_55fb30f6f8be4a8f8b60596d208044dd
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_f6d45a91b78d4e7d95e1f2bc44c96348
+          - name: content-type
+            value: application/json
+            id: pair_27b680101f1b4b2da604e0357e5f357a
+          - name: app-version
+            value: 2.8.121
+            id: pair_231ec161dcdd43599fe43ba263fdadc3
+        scripts:
+          afterResponse: |-
+            if (insomnia.response.code === 200) {
+              const jsonBody = insomnia.response.json();
+              insomnia.environment.set("jwt_token", jsonBody.access_token);
+            }
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: PUSH
+    meta:
+      id: fld_57039acda4b1439ea59abc6294b4b1bf
+      created: 1759502539202
+      modified: 1759511997394
+      sortKey: -1759352443243
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/push/list"
+        name: Listar pushs
+        meta:
+          id: req_721e5bd1187244b9a029f7bcddd3ab7d
+          created: 1759502593529
+          modified: 1759514869197
+          isPrivate: false
+          description: ""
+          sortKey: -1759502609075
+        method: GET
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.8.121
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: DEVICE
+    meta:
+      id: fld_0bc4ef459a8c44aab5535ce9e62cbc07
+      created: 1759511920422
+      modified: 1759512229408
+      sortKey: -1759511920422
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/device"
+        name: Criar analise
+        meta:
+          id: req_473865af288a4b3f81be3744be78b6c4
+          created: 1759352139578
+          modified: 1769543257790
+          isPrivate: false
+          description: ""
+          sortKey: -1759511925486
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"uuid_app": "35bc4465-1025-4957-8313-c700187bbc01",
+            	"document": "06212094144",
+            	"device_store_id": "cbc3dd88c52679fc"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: NEGOTIATION
+    meta:
+      id: fld_dd78690a2d9941d7861c0db08b430274
+      created: 1761917725878
+      modified: 1761917725878
+      sortKey: -1761917725878
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/negotiation/simulation/app"
+        name: Simular negociação para o app
+        meta:
+          id: req_0e3a72bd215742eca686b2e3048643b4
+          created: 1761917729019
+          modified: 1761917808783
+          isPrivate: false
+          description: ""
+          sortKey: -1761917729019
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"value": 1000,
+            	"days": 60,
+            	"incomingAmount": 200
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+            id: pair_b189a89421eb4ad2935fe902664472b6
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: EXTERNAL CARD
+    meta:
+      id: fld_42fcbcda889546e299a0f02d16555b1e
+      created: 1763988053082
+      modified: 1763988053082
+      sortKey: -1763988053082
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/external-card/validate/bin-number/:bin_number"
+        name: Validar bin number
+        meta:
+          id: req_40e3e0065c49499e910ba9fec5d53710
+          created: 1763988063181
+          modified: 1769541987230
+          isPrivate: false
+          description: ""
+          sortKey: -1763988067590
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: bin_number
+            value: "45179900"
+      - url: "{{ _.base_url }}/external-card"
+        name: Buscar cartões externos
+        meta:
+          id: req_3c9768abc0a94bac91bba22d0f46bd20
+          created: 1769543580861
+          modified: 1769543619982
+          isPrivate: false
+          description: ""
+          sortKey: -1763988033661
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/external-card"
+        name: Criar cartão externo
+        meta:
+          id: req_9261808d2fde446c8253ab80864b177a
+          created: 1769543725107
+          modified: 1769543737899
+          isPrivate: false
+          description: ""
+          sortKey: -1763988016696.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"token": "aaaa"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: INVOICE RENDER
+    meta:
+      id: fld_ec3618989f89420581d0d80b6af30d3a
+      created: 1767453624660
+      modified: 1767453624660
+      sortKey: -1767453624660
+      description: ""
+    children:
+      - url: "{{ _.invoice_render_base_url
+          }}/f/americanas/fatura/50947766-1310-4c0c-903d-33609bc925d5"
+        name: Buscar pdf da fatura
+        meta:
+          id: req_6544a1047ac24ac5a7b0d8164f725cc8
+          created: 1767453628463
+          modified: 1774634508215
+          isPrivate: false
+          description: ""
+          sortKey: -1767453633464
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: INVOICE
+    meta:
+      id: fld_86b3ed49cea4405dbc29ff855b324388
+      created: 1767706141963
+      modified: 1767706141963
+      sortKey: -1767706141963
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/invoice/current-amount"
+        name: Valor atual da fatura
+        meta:
+          id: req_49fee34b78974a42b6624ed670270cfb
+          created: 1767706158528
+          modified: 1767706183558
+          isPrivate: false
+          description: ""
+          sortKey: -1767706170882
+        method: GET
+        headers:
+          - name: host
+            value: "{{ _.host }}"
+            id: pair_477555daf2e84d7b85b68f9c60eba8c4
+          - id: pair_f84e08077e964c08ac831da96ac580ae
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_457c518cfde14ebeab33ea990165398a
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: PIX
+    meta:
+      id: fld_f297a04616c74b02a07221168d30eba0
+      created: 1769541840216
+      modified: 1769541840216
+      sortKey: -1769541840216
+      description: ""
+    children:
+      - name: PIX OUT
+        meta:
+          id: fld_7c2846a25cdc4512a18398098f0aa246
+          created: 1764008703754
+          modified: 1770298175201
+          sortKey: -1770298155778
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/pixout/eligible/all"
+            name: "Verificar todas as elegibilidades "
+            meta:
+              id: req_6e3995797d21438bb2d73d24f3bfbf80
+              created: 1764008772421
+              modified: 1764008875825
+              isPrivate: false
+              description: ""
+              sortKey: -1764008792363
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"amount": 100.00
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/pixout/scheduled/cancel"
+            name: Cancelar PIX agendado
+            meta:
+              id: req_8dfc890c6c714cc9a52e54d64923c928
+              created: 1770298377180
+              modified: 1770298538117
+              isPrivate: false
+              description: ""
+              sortKey: -1763998429976.5
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"uuid_pix_transaction": "0c2751a9-ad59-4c6f-8196-2c30f395679b"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: KEY
+        meta:
+          id: fld_6f3af6b65ec54d72a8983af9401977f5
+          created: 1770298137312
+          modified: 1770298137312
+          sortKey: -1770298137312
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/key/active/bywallet"
+            name: Listar chaves PIX
+            meta:
+              id: req_4197b8c98cb14df1b700c2fab33d44d6
+              created: 1770059911152
+              modified: 1770298148521
+              isPrivate: false
+              description: ""
+              sortKey: -1770298144445
+            method: GET
+            headers:
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+              disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/key/register"
+            name: Criar chave PIX
+            meta:
+              id: req_565af47e828c4ec3b25a551da12ff6ed
+              created: 1770059989009
+              modified: 1770298146437
+              isPrivate: false
+              description: ""
+              sortKey: -1770298144495
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"pix_key": "vinicius-rezende91@fosjc.unesp.br",
+                	"pix_key_type": 2,
+                	"id_token": "a1a73cea-5454-4801-a4ce-528ddd5556b8"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+              disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/key/info"
+            name: Informações da Chave PIX
+            meta:
+              id: req_759633042f99429f8ee39ced632ecc67
+              created: 1770297729736
+              modified: 1770298144433
+              isPrivate: false
+              description: ""
+              sortKey: -1770298144395
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                	"pix_key": "12742069607",
+                	"pix_key_type": 0
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+              disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: DETAILS
+        meta:
+          id: fld_024c8152bd014b0da7644190c8e3c52b
+          created: 1770298155678
+          modified: 1770298155678
+          sortKey: -1770298155678
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/pix/details-transaction/:nsu"
+            name: Detalhes da transação PIX
+            meta:
+              id: req_cbf9d75097394de0a37c493a221f21be
+              created: 1769541859464
+              modified: 1770298164837
+              isPrivate: false
+              description: ""
+              sortKey: -1770298163780
+            method: GET
+            headers:
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: "{{ _.jwt_token }}"
+              disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+            pathParameters:
+              - name: nsu
+                value: E031301702026012021417LQ1VV5MDUC
+          - url: "{{ _.base_url }}/pix/details/:nsu"
+            name: Detalhes do PIX
+            meta:
+              id: req_06122ff06edd4f5bac4dbfb8263a57d0
+              created: 1769542296029
+              modified: 1770298163719
+              isPrivate: false
+              description: ""
+              sortKey: -1770298163680
+            method: GET
+            headers:
+              - id: pair_b4a9e8d756df49de8344b67958a4c392
+                name: app-version
+                value: 2.7.120
+                description: ""
+                disabled: false
+              - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+                name: user-agent
+                value: Dart/3.8 (dart:io)
+                description: ""
+                disabled: false
+              - id: pair_640af4a84a934a23986eebb2f9cf7f92
+                name: host
+                value: "{{ _.host }}"
+                description: ""
+                disabled: false
+            authentication:
+              type: bearer
+              token: ""
+              disabled: false
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+            pathParameters:
+              - name: nsu
+                value: E031301702026012021417LQ1VV5MDUC
+  - name: WALLET
+    meta:
+      id: fld_89fc56c641694c5bb159648aa75d4837
+      created: 1769542022210
+      modified: 1769542022210
+      sortKey: -1769542022210
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/wallet/statement"
+        name: Buscar extrato
+        meta:
+          id: req_eb9ed1586a7c4ce8b72abd389b55b6ba
+          created: 1769542061129
+          modified: 1769542174201
+          isPrivate: false
+          description: ""
+          sortKey: -1769542063598
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: CARD
+    meta:
+      id: fld_1ba93a859b494253b0be6cb4d730acd2
+      created: 1770295785262
+      modified: 1770295785262
+      sortKey: -1770295785262
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/card"
+        name: Buscar cartão físico
+        meta:
+          id: req_8963d4e4a27f456a964ee182d0af5345
+          created: 1770295795142
+          modified: 1770295803207
+          isPrivate: false
+          description: ""
+          sortKey: -1770295798217
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: TOKEN
+    meta:
+      id: fld_b33942aca18a497d9612f0732bbc7acc
+      created: 1770297384502
+      modified: 1770297384502
+      sortKey: -1770297384502
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/token/generate/pix-key/email"
+        name: Enviar validação email para PIX
+        meta:
+          id: req_72ab4312d22c42599eb5ab378d3461c3
+          created: 1770297396518
+          modified: 1770297497280
+          isPrivate: false
+          description: ""
+          sortKey: -1770297401256
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "vinicius-rezende91@fosjc.unesp.br"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/token/validate/email/:jwt"
+        name: Validar email para PIX
+        meta:
+          id: req_cd1afc1bdbeb4d65ae7c4df319123114
+          created: 1770297559208
+          modified: 1770297601272
+          isPrivate: false
+          description: ""
+          sortKey: -1770296599736.5
+        method: GET
+        headers:
+          - id: pair_b4a9e8d756df49de8344b67958a4c392
+            name: app-version
+            value: 2.7.120
+            description: ""
+            disabled: false
+          - id: pair_12a1e8a56b5f40d780f6371cddeae93c
+            name: user-agent
+            value: Dart/3.8 (dart:io)
+            description: ""
+            disabled: false
+          - id: pair_640af4a84a934a23986eebb2f9cf7f92
+            name: host
+            value: "{{ _.host }}"
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: "{{ _.jwt_token }}"
+          disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: jwt
+            value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiYTFhNzNjZWEtNTQ1NC00ODAxLWE0Y2UtNTI4ZGRkNTU1NmI4IiwidG9rZW4iOjY1ODE2MSwiaWF0IjoxNzcwMjk3NDk4fQ.7E9896e9HtsDc6T_TBrsXBGBf7rKO1o2dADeU4frVP8
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_8d82d72735deca4c4fd7956353fa02fa01ab0813
+    created: 1759352102471
+    modified: 1775591604044
+environments:
+  name: Base Environment
+  meta:
+    id: env_8d82d72735deca4c4fd7956353fa02fa01ab0813
+    created: 1759352102469
+    modified: 1775591604048
+    isPrivate: false
+  data:
+    base_url: https://app-bank.brasilcard.net
+    host: app-bank.brasilcard.net
+    password: "739481"
+  subEnvironments:
+    - name: Production
+      meta:
+        id: env_0b3a5802ea014d2792c9d2eb910221a9
+        created: 1761917455792
+        modified: 1767454256089
+        isPrivate: false
+        sortKey: 1761917455792
+      data:
+        base_url: https://app-bank.brasilcard.net
+        jwt_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiIwNWQ2MzVlYy00MzYwLTQ3OGEtODk1Ny1kM2ZjYTEzZGVjOGQiLCJ3YWxsZXQiOiI4NWQzMGRiNy04MWFiLTQwNDctOTZkOC1hNjFhNzI2M2FjZDQiLCJjYXJkIjoiYWIwZWQ4ODItMGY4MS00ODgwLWE1Y2MtOWZjNzZmOGIzZDYzIiwidXVpZF90b2tlbiI6IjkyYWJjMTM4LTBlYWYtNDA0ZS1hZTUxLTFlYWJjYWI5Mjc3MyIsIm9yaWdpbiI6IkFQUCIsImlhdCI6MTc1OTUxNTg0MSwiZXhwIjoxNzU5NTE5NDQxfQ.MpOJ5eru91QVMeczcROQ_FaIgSr9WmPmLTnO8xVnveo
+        host: app-bank.brasilcard.net
+        password: "739481"
+        client_id: "014735503739986311"
+        client_secret: hihSCZeZEW3v9gwM4r55GRKRfEsasrMP
+        invoice_render_base_url: https://bank-invoice-render.brasilcard.net
+      color: "#ff0000"
+    - name: HML
+      meta:
+        id: env_2da2600fb9f44f4db77e1d176786e880
+        created: 1761917478184
+        modified: 1775591604046
+        isPrivate: false
+        sortKey: 1761917455842
+      data:
+        base_url: https://app-bank-hml.brasilcard.net
+        host: app-bank-hml.brasilcard.net
+        password: "202020"
+        client_id: "831352415205720136"
+        client_secret: iUsqT-CZlLMKzKT5Ptbfk9ovQhTnMv5I
+        jwt_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnQiOiJkZjY2MGVjYS03MmQwLTRlNzUtYTkxYy00ZGMzN2ZjZWUxZTgiLCJ3YWxsZXQiOiIwYWMzYWVlYy1kOWQ0LTQxZGQtOGNmMi02OTVlNmIzYjM0NWIiLCJjYXJkIjoiZjJkYzk1MmQtYjgwMi00ZWFhLWIzYWQtNzZhNjA0ZTI3NWJmIiwidXVpZF90b2tlbiI6ImI5ZWUzZTIxLTMzOWEtNDk2Zi04YjQ2LWQ0YzQ0ZDEzM2U3MiIsIm9yaWdpbiI6IkFQUCIsImlhdCI6MTc3MTAwNTUzOSwiZXhwIjoxNzcxMDA5MTM5fQ.dENZppyVQyNhBjerAz64L95oFiU0KoyF7Q-2bzFJaMU
+        invoice_render_base_url: http://bank-hml.cobuccio.com.br:3531
+      color: "#ca8102"

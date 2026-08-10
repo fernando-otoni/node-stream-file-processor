@@ -1,73 +1,44 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 import { FileJobEntity } from "../entities/file-jobs.entity";
 import { FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
 import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/transaction/base-repository";
 import { TransactionContext } from "src/core/shared/infra/persistence/typeorm/transaction/transaction-context";
+import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 
 @Injectable()
-export class FileJobRepositoryImpl 
-extends TypeOrmRepository<FileJobEntity>
-implements FileJobRepository {
+export class FileJobRepositoryImpl
+  extends TypeOrmRepository<FileJobEntity>
+  implements FileJobRepository {
   constructor(
     @InjectRepository(FileJobEntity)
     repository: Repository<FileJobEntity>,
     transactionContext: TransactionContext
-  ) { 
+  ) {
     super(FileJobEntity, repository, transactionContext)
+  }
+
+  getNextPendingFileJob(): Promise<FileJobEntity | null> {
+    return this.getRepository()
+      .createQueryBuilder('file_job')
+      .setLock('pessimistic_write')
+      .setOnLocked('skip_locked')
+      .innerJoinAndSelect('file_job.file', 'file')
+      .where('file_job.status = :status', {
+        status: FileJobStatusEnum.PENDING
+      })
+      .orderBy('file_job.created_at', 'DESC')
+      .getOne()
   }
 
   save(job: Partial<FileJobEntity>) {
     return this.getRepository().save(job)
   }
 
-  async getPendingJobs() {
-    // const [jobs, total] = await this.repository.findAndCount({
-    //   where: {
-    //     status: JobStatusEnum.PENDING
-    //   },
-    //   skip: (page - 1) * pageSize,
-    //   take: pageSize,
-    //   order: {
-    //     created_at: 'ASC'
-    //   }
-    // })
-
-    return {
-      results: [],
-      total: 10
-    }
-  }
-
   async getFileJobByFileId(file_id: number) {
     return this.getRepository().findOneBy({ file_id })
   }
-
-  // async getNextPendingJob({}: GetNextPendingJobInput) {
-  //   return await this.repository.findOne({
-  //     where: {
-  //       status: JobStatusEnum.PENDING
-  //     },
-  //     order: {
-  //       created_at: 'ASC'
-  //     }
-  //   })
-  // }
-
-  // async getNextFailedJob({
-  //   type
-  // }: GetNextFailedJobInput) {
-  //   return this.repository
-  //     .createQueryBuilder('job')
-  //     .where('job.type = :type', { type })
-  //     .andWhere('job.status = :status', { status: JobStatusEnum.FAILED })
-  //     .andWhere('job.attempts < 3')
-  //     .andWhere(`job.finished_at < NOW() - INTERVAL '5 minutes'`)
-  //     .orderBy('job.created_at', 'ASC')
-  //     .getOne()
-  // }
 
   async update(data: Partial<FileJobEntity>, id: number) {
     await this.getRepository().update(id, {

@@ -12,14 +12,14 @@ export class GenerateJobFileHashUseCase
   constructor() { }
 
   async call(input: GenerateJobFileHashInput) {
-    const { file_path, id: job_id } = input
+    const { file_path, job_id } = input
     
     Logger.log({
       method: `${this.constructor.name}.call()`,
       message: 'Starting job file processing',
       data: JSON.stringify(input),
       job_id
-    }, 'Job')
+    })
 
     const hash = createHash('sha256')
 
@@ -52,7 +52,7 @@ export class GenerateJobFileHashUseCase
       message: 'Job file processed successfully',
       job_id,
       output
-    }, 'Job')
+    })
 
     return output
   }

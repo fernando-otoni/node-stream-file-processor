@@ -1,4 +1,4 @@
 export interface GenerateJobFileHashInput {
-  id: number
+  job_id: number
   file_path: string
 }

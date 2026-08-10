@@ -12,6 +12,7 @@ export interface FileEntity {
   size: number
   hash: string | undefined
   status: FileStatusEnum
+  duplicate_of_file_id: number | undefined
   created_at: Date
   updated_at: Date
   deleted_at: Date | undefined
