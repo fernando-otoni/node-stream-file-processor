@@ -1,8 +1,0 @@
-{
-"select ac.id_account, ac.id_status_account, c.uuid_card  from account ac\r\ninner join card c on c.id_account = ac.id_account \r\nwhere ac.id_status_account in (3, 8, 15) -- conta inadimplente\r\nand c.id_type_card = 2 -- cartão virtual\r\nand c.id_status_card in (1, 2) -- ativo ou bloqueado": [
-	{
-		"id_account" : 25796,
-		"id_status_account" : 8,
-		"uuid_card" : "824bc3a7-e166-4a75-bb20-218bad48f3bd"
-	}
-]}

@@ -5,7 +5,6 @@ import { UploadController } from "./infra/controller/upload/upload.controller";
 import { SaveFileUseCase } from "./application/use-cases/save-file/save-file.use-case";
 import { FileRepositoryImpl } from "./infra/database/repositories/file.repository";
 import { FileRepository } from './domain/repositories/file.repository'
-import { GetNextPendingFile } from "./application/use-cases/get-next-pending-file/get-next-pending-file.use-case";
 import { FileJobEntity } from "./infra/database/entities/file-jobs.entity";
 import { FileSchedulerWorker } from "./infra/worker/file-scheduler.worker";
 import { FileJobRepository } from "./domain/repositories/file-job.repository";
@@ -16,6 +15,9 @@ import { FileJobProcessorWorker } from "./infra/worker/file-job-processor.worker
 import { ProcessFileJobUseCase } from "./application/use-cases/process-file-job/process-file-job.use-case";
 import { SimulacaoFinanciamentoUseCase } from "./application/use-cases/simulacao-financiamento/simulacao-financiamento.use-case";
 import { GenerateJobFileHashUseCase } from "./application/use-cases/generate-job-file-hash/generate-job-file-hash.use-case";
+import { FailedFileJobProcessor } from "./infra/worker/failed-file-job-processor.worker";
+import { ReprocessFailedFileJobUseCase } from "./application/use-cases/reprocess-failed-file-job/reprocess-failed-file-job.use-case";
+import { ClaimNextPendingFileUseCase } from "./application/use-cases/claim-next-pending-file/claim-next-pending-file.use-case";
 
 @Module({
   imports: [
@@ -32,12 +34,14 @@ import { GenerateJobFileHashUseCase } from "./application/use-cases/generate-job
   providers: [
     SaveFileUseCase,
     FileSchedulerWorker,
-    GetNextPendingFile,
+    ClaimNextPendingFileUseCase,
     SetFileToQueuedUseCase,
     FileJobProcessorWorker,
     ProcessFileJobUseCase,
     SimulacaoFinanciamentoUseCase,
     GenerateJobFileHashUseCase,
+    FailedFileJobProcessor,
+    ReprocessFailedFileJobUseCase,
     {
       provide: FileRepository,
       useClass: FileRepositoryImpl
@@ -47,6 +51,6 @@ import { GenerateJobFileHashUseCase } from "./application/use-cases/generate-job
       useClass: FileJobRepositoryImpl
     }
   ],
-  exports: [GetNextPendingFile]
+  exports: [ClaimNextPendingFileUseCase]
 })
 export class FilesModule { }

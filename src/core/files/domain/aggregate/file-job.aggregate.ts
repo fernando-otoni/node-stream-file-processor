@@ -71,7 +71,7 @@ export class FileJob extends AggregateRoot {
 
     this.status = FileJobStatusEnum.PROCESSING
   }
-  
+
   toDone() {
     if(this.status !== FileJobStatusEnum.PROCESSING) {
       this.notification.addError({
@@ -92,6 +92,16 @@ export class FileJob extends AggregateRoot {
 
   incrementAttemps() {
     this.attempts += 1
+  }
+
+  setErrors(errors?: Record<string, any>[]) {
+    const notificationErrors = this.notification.toJSON()
+    console.log(errors)
+
+    this.error = [
+      ...notificationErrors, 
+      ...(errors?.length ? [...errors] : [])
+    ]
   }
 
   hasErrors(): boolean {

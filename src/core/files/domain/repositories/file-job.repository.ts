@@ -6,4 +6,5 @@ export abstract class FileJobRepository {
   update: (data: Partial<FileJobEntity>, id: number) => Promise<FileJobEntity>
   getFileJobByFileId: (file_id: number) => Promise<FileJobEntity | null>
   getNextPendingFileJob: () => Promise<FileJobEntity | null>
+  getNextFailedFileJob: () => Promise<FileJobEntity | null>
 }

@@ -32,6 +32,22 @@ export class FileJobRepositoryImpl
       .getOne()
   }
 
+  getNextFailedFileJob(): Promise<FileJobEntity | null> {
+    return this.getRepository()
+      .createQueryBuilder('file_job')
+      .setLock('pessimistic_write')
+      .setOnLocked('skip_locked')
+      .innerJoinAndSelect('file_job.file', 'file')
+      .where('file_job.status = :status', {
+        status: FileJobStatusEnum.FAILED
+      })
+      .andWhere('file_job.attempts <= :attempts', {
+        attempts: 4
+      })
+      .orderBy('file_job.created_at', 'DESC')
+      .getOne()
+  }
+
   save(job: Partial<FileJobEntity>) {
     return this.getRepository().save(job)
   }
