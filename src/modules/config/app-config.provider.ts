@@ -16,4 +16,22 @@ export class AppConfigImpl implements AppConfigProvider {
 
     return +maxAttempts
   }
+
+  get fileJobConcurrency(): number {
+    const fileJobConcurrency = this.configService.get<number>('FILE_JOB_CONCURRENCY')
+    if(!fileJobConcurrency) {
+      throw new Error(`FILE_JOB_CONCURRENCY in not defined`)
+    }
+
+    return +fileJobConcurrency
+  }
+
+  get logLevel(): string[] {
+    const logLevel = this.configService.get<string>('LOG_LEVEL')
+    if(logLevel === undefined) {
+      throw new Error(`LOG_LEVEL in not defined`)
+    }
+
+    return logLevel.split(",")
+  }
 }

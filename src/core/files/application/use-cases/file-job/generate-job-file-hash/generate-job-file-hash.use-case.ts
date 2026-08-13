@@ -5,16 +5,19 @@ import * as fs from 'fs';
 import { pipeline } from "stream/promises";
 import { GenerateJobFileHashOutput } from "./generate-job-file-hash.output";
 import { GenerateJobFileHashInput } from "./generate-job-file-hash.input";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export class GenerateJobFileHashUseCase 
   implements UseCase<GenerateJobFileHashInput, GenerateJobFileHashOutput> {
-  constructor() { }
+  constructor(
+    private readonly logger: LoggerProvider
+  ) { }
 
   async call(input: GenerateJobFileHashInput) {
     const { file_path, job_id } = input
     
-    Logger.log({
+    this.logger.log({
       method: `${this.constructor.name}.call()`,
       message: 'Starting job file processing',
       data: JSON.stringify(input),
@@ -47,7 +50,7 @@ export class GenerateJobFileHashUseCase
       storage_path: storagePath
     }
 
-    Logger.log({
+    this.logger.log({
       method: `${this.constructor.name}.call()`,
       message: 'Job file processed successfully',
       job_id,

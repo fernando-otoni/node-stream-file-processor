@@ -5,18 +5,20 @@ import { EntityValidationError } from 'src/core/shared/domain/errors/entity-vali
 import { Injectable, Logger } from '@nestjs/common';
 import { FileRepository } from 'src/core/files/domain/repositories/file.repository';
 import { FilePersistenceMapper } from 'src/core/files/infra/database/mapper/file-persistence.mapper';
+import { LoggerProvider } from 'src/core/shared/application/logger.interface';
 
 @Injectable()
 export class SaveFileUseCase implements UseCase<SaveFileUseCaseInput, void> {
   constructor(
-    private readonly fileRepository: FileRepository
+    private readonly fileRepository: FileRepository,
+    private readonly logger: LoggerProvider
   ) {}
 
   async call({ uploaded_file }: SaveFileUseCaseInput) {
     const file = File.createFromUploadedFile(uploaded_file)
 
     if(file.hasErrors()) {
-      Logger.error({
+      this.logger.error({
         method: `${this.constructor.name}.call()`,
         errors: JSON.stringify(file.notification.toJSON())
       })
@@ -27,7 +29,7 @@ export class SaveFileUseCase implements UseCase<SaveFileUseCaseInput, void> {
 
     const filePersisted = await this.fileRepository.save(toPersistence)
 
-    Logger.log({
+    this.logger.log({
       method: `${this.constructor.name}.call()`,
       message: `File successfully saved`,
       file: JSON.stringify(filePersisted)

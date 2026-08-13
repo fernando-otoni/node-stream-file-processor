@@ -6,13 +6,15 @@ import { File } from "src/core/files/domain/aggregate/file.aggregate";
 import { FileRepository } from "src/core/files/domain/repositories/file.repository";
 import { ProcessFileJobInput } from "./process-file-job.input";
 import { GenerateJobFileHashUseCase } from "../generate-job-file-hash/generate-job-file-hash.use-case";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export class ProcessFileJobUseCase implements UseCase<ProcessFileJobInput, void> {
   constructor(
     private readonly fileJobRepository: FileJobRepository,
     private readonly fileRepository: FileRepository,
-    private readonly generateJobFileHashUseCase: GenerateJobFileHashUseCase
+    private readonly generateJobFileHashUseCase: GenerateJobFileHashUseCase,
+    private readonly logger: LoggerProvider
   ) { }
 
   async call({
@@ -31,7 +33,7 @@ export class ProcessFileJobUseCase implements UseCase<ProcessFileJobInput, void>
         this.fileJobRepository.save(file_job.toEntity())
       ])
 
-      Logger.log({
+      this.logger.log({
         method: `${this.constructor.name}.call()`,
         message: 'Process File Job success',
         data: {
@@ -54,7 +56,7 @@ export class ProcessFileJobUseCase implements UseCase<ProcessFileJobInput, void>
 
     const fileDuplicated = await this.fileRepository.findByHash(hashOutput.hash)
     if (fileDuplicated) {
-      Logger.warn({
+      this.logger.warn({
         method: `${this.constructor.name}.call()`,
         message: `File is duplicate of ${fileDuplicated.id}`
       })

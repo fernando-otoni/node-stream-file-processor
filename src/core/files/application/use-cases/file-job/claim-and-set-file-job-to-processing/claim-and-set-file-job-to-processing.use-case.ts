@@ -11,6 +11,7 @@ import { FileJobEntity } from "src/core/files/domain/entities/file-job.entity";
 import { EntityNotFoundError } from "src/core/shared/domain/errors/entity-not-found.error";
 import { ClaimAndSetFileJobToProcessingInput } from "./claim-and-set-file-job-to-processing.input";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export default class ClaimAndSetFileJobToProcessingUseCase 
@@ -20,7 +21,8 @@ export default class ClaimAndSetFileJobToProcessingUseCase
 > {
   constructor(
     private readonly unitOfWork: UnitOfWork,
-    private readonly fileJobRepository: FileJobRepository
+    private readonly fileJobRepository: FileJobRepository,
+    private readonly logger: LoggerProvider
   ) {}
 
   async call({ status }: ClaimAndSetFileJobToProcessingInput) {
@@ -88,7 +90,7 @@ export default class ClaimAndSetFileJobToProcessingUseCase
 
   async persistFileJob(file_job: FileJob) {
     if(file_job.hasErrors()) {
-      Logger.log({
+      this.logger.log({
         method: `${this.constructor.name}.call()`,
         file_job: JSON.stringify(file_job),
         errors: file_job.notification.toJSON()
@@ -110,7 +112,7 @@ export default class ClaimAndSetFileJobToProcessingUseCase
 
     await this.fileJobRepository.save(file_job.toEntity())
 
-    Logger.error({
+    this.logger.error({
       method: `${this.constructor.name}.call()`,
       file_job: file_job.toEntity(),
       error: file_job.notification.toJSON()

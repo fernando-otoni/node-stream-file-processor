@@ -1,15 +1,18 @@
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import { SetFileToQueuedUseCase } from "../../application/use-cases/file/set-file-to-queued/set-file-to-queued.use-case";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export class FileSchedulerWorker implements OnModuleInit {
   constructor(
     private readonly setFileToQueued: SetFileToQueuedUseCase,
+    private readonly logger: LoggerProvider
   ) { }
 
   onModuleInit() {
     this.start()
-    Logger.log({
+    
+    this.logger.log({
       method: `${this.constructor.name}.start()`
     })
   }

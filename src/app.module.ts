@@ -23,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     FilesModule,
     SharedModule,
-    ModulesModule
+    ModulesModule,
   ],
   controllers: [],
   providers: [],

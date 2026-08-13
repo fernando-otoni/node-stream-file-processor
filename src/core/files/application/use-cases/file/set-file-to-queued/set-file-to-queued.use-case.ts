@@ -9,13 +9,15 @@ import { EntityNotFoundError } from "src/core/shared/domain/errors/entity-not-fo
 import { File } from "src/core/files/domain/aggregate/file.aggregate";
 import { EntityConflictError } from "src/core/shared/domain/errors/entity-conflict.error";
 import { UnitOfWork } from "src/core/shared/application/unit-of-work.interface";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export class SetFileToQueuedUseCase implements UseCase<void, void> {
   constructor(
     private readonly fileJobRepository: FileJobRepository,
     private readonly fileRepository: FileRepository,
-    private readonly unitOfWork: UnitOfWork
+    private readonly unitOfWork: UnitOfWork,
+    private readonly logger: LoggerProvider
   ) { }
 
   async call() {
@@ -33,7 +35,7 @@ export class SetFileToQueuedUseCase implements UseCase<void, void> {
 
       const fileJob = await this.persistFileJob(file.id!)
 
-      Logger.log({
+      this.logger.log({
         method: `${this.constructor.name}.call()`,
         message: `Job created successfully`,
         data: { file_id: file.id!, file_job_id: fileJob.id }
@@ -63,7 +65,7 @@ export class SetFileToQueuedUseCase implements UseCase<void, void> {
     const fileJob = FileJob.create({ file_id })
 
     if (fileJob.hasErrors()) {
-      Logger.error({
+      this.logger.error({
         method: `${this.constructor.name}.call()`,
         errors: JSON.stringify(fileJob.notification.toJSON())
       })

@@ -11,7 +11,6 @@ import { AppConfigImpl } from "./config/app-config.provider";
     }
   ],
   exports: [AppConfigProvider]
-
 })
 
 export class ModulesModule { }

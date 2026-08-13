@@ -2,23 +2,25 @@ import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
 import ClaimNextFailedJobUseCase from "../../application/use-cases/file-job/claim-and-set-file-job-to-processing/claim-and-set-file-job-to-processing.use-case";
 import { FileJobStatusEnum } from "../../domain/enums/file-job-status.enum";
 import { ProcessFileJobUseCase } from "../../application/use-cases/file-job/process-file-job/process-file-job.use-case";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
 
 @Injectable()
 export class FailedFileJobProcessor implements OnModuleInit {
   constructor(
     private readonly claimNextFailedJob: ClaimNextFailedJobUseCase,
-    private readonly processFileJobUseCase: ProcessFileJobUseCase
+    private readonly processFileJobUseCase: ProcessFileJobUseCase,
+    private readonly logger: LoggerProvider
   ) {}
 
   onModuleInit() {
     this.start()
-    Logger.log({
+    this.logger.log({
       method: `${this.constructor.name}.start()`
     })
   }
 
   async start() {
-    Logger.log({
+    this.logger.log({
       method: `${this.constructor.name}.start()`
     })
 
