@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FilesModule } from './core/files/files.module';
 import { SharedModule } from './core/shared/shared.module';
+import { ModulesModule } from './modules/modules.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -16,8 +18,12 @@ import { SharedModule } from './core/shared/shared.module';
       synchronize: true,
       logger: 'debug'
     }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     FilesModule,
-    SharedModule
+    SharedModule,
+    ModulesModule
   ],
   controllers: [],
   providers: [],

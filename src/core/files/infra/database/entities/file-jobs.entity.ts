@@ -2,7 +2,7 @@ import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.e
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./files.entity";
 
-@Entity('file-jobs')
+@Entity('file_jobs')
 export class FileJobEntity {
   @PrimaryGeneratedColumn()
   id: number;

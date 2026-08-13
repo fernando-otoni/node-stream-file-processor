@@ -40,7 +40,7 @@ export class FileJob extends AggregateRoot {
     this.created_at = props.created_at ?? new Date()
     this.updated_at = props.updated_at ?? new Date()
     this.finished_at = props.finished_at ?? null
-    this.deleted_at = props.finished_at ?? null
+    this.deleted_at = props.deleted_at ?? null
   }
 
   static create(input: FileJobCreateCommand): FileJob {
@@ -60,7 +60,7 @@ export class FileJob extends AggregateRoot {
   }
 
   toProcessing() {
-    if(this.status !== FileJobStatusEnum.PENDING) {
+    if(this.status !== FileJobStatusEnum.PENDING && this.status !== FileJobStatusEnum.FAILED) {
       this.notification.addError({
         field: 'status',
         error: `File Job cannot be processed due to current status ${this.status}`
@@ -88,15 +88,12 @@ export class FileJob extends AggregateRoot {
 
   toFailed() {
     this.status = FileJobStatusEnum.FAILED
-  }
 
-  incrementAttemps() {
     this.attempts += 1
   }
 
   setErrors(errors?: Record<string, any>[]) {
     const notificationErrors = this.notification.toJSON()
-    console.log(errors)
 
     this.error = [
       ...notificationErrors, 

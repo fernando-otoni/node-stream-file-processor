@@ -6,6 +6,7 @@ import { FileJobRepository } from "src/core/files/domain/repositories/file-job.r
 import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/transaction/base-repository";
 import { TransactionContext } from "src/core/shared/infra/persistence/typeorm/transaction/transaction-context";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
+import { AppConfigProvider } from "src/modules/config/app-config.interface";
 
 @Injectable()
 export class FileJobRepositoryImpl
@@ -14,35 +15,24 @@ export class FileJobRepositoryImpl
   constructor(
     @InjectRepository(FileJobEntity)
     repository: Repository<FileJobEntity>,
-    transactionContext: TransactionContext
+    transactionContext: TransactionContext,
+    private readonly appConfig: AppConfigProvider
+
   ) {
     super(FileJobEntity, repository, transactionContext)
   }
 
-  getNextPendingFileJob(): Promise<FileJobEntity | null> {
+  claimFileJobByStatus(status: FileJobStatusEnum): Promise<FileJobEntity | null> {
     return this.getRepository()
       .createQueryBuilder('file_job')
       .setLock('pessimistic_write')
       .setOnLocked('skip_locked')
       .innerJoinAndSelect('file_job.file', 'file')
       .where('file_job.status = :status', {
-        status: FileJobStatusEnum.PENDING
-      })
-      .orderBy('file_job.created_at', 'DESC')
-      .getOne()
-  }
-
-  getNextFailedFileJob(): Promise<FileJobEntity | null> {
-    return this.getRepository()
-      .createQueryBuilder('file_job')
-      .setLock('pessimistic_write')
-      .setOnLocked('skip_locked')
-      .innerJoinAndSelect('file_job.file', 'file')
-      .where('file_job.status = :status', {
-        status: FileJobStatusEnum.FAILED
+        status
       })
       .andWhere('file_job.attempts <= :attempts', {
-        attempts: 4
+        attempts: this.appConfig.fileJobMaxAttempts
       })
       .orderBy('file_job.created_at', 'DESC')
       .getOne()

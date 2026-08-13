@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
-import { SetFileToQueuedUseCase } from "../../application/use-cases/set-file-to-queued/set-file-to-queued.use-case";
+import { SetFileToQueuedUseCase } from "../../application/use-cases/file/set-file-to-queued/set-file-to-queued.use-case";
 
 @Injectable()
 export class FileSchedulerWorker implements OnModuleInit {

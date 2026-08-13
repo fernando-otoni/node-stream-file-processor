@@ -94,10 +94,13 @@ export class File extends AggregateRoot {
     }
 
     this.hash = hash
+    this.status = FileStatusEnum.PROCESSED
   }
 
   isDuplicateOfFile(id: number) {
     this.duplicate_of_file_id = id
+
+    this.status = FileStatusEnum.DUPLICATE
   }
 
   toProcessed() {
@@ -112,19 +115,6 @@ export class File extends AggregateRoot {
     }
 
     this.status = FileStatusEnum.PROCESSED
-  }
-
-  toDuplicate() {
-    if(!this.duplicate_of_file_id) {
-      this.notification.addError({
-        error: `File cannot be set to duplicate while duplicate_of_file_id is null`,
-        field: 'duplicate_of_file_id'
-      })
-
-      return
-    }
-
-    this.status = FileStatusEnum.DUPLICATE
   }
 
   static createFromEntity(file: FileEntity) {
