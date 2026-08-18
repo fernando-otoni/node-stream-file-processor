@@ -58,7 +58,9 @@ export class ProcessFileJobUseCase implements UseCase<ProcessFileJobInput, void>
     if (fileDuplicated) {
       this.logger.warn({
         method: `${this.constructor.name}.call()`,
-        message: `File is duplicate of ${fileDuplicated.id}`
+        message: `File ${file_job.file_id} is duplicate of File ${fileDuplicated.id}`,
+        job_id: file_job.id!,
+        file_id: file_job.file_id
       })
       file.isDuplicateOfFile(fileDuplicated.id!)
     } else {

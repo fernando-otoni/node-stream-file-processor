@@ -45,22 +45,27 @@ export class FileJobProcessorWorker implements OnModuleInit {
 
   private async processJob(workerId: number) {
     try {
+      const start = new Date()
+      
       const output = await this.claimAndSetJobToProcessing.call({
         status: FileJobStatusEnum.PENDING
       })
 
-      Logger.log({
-        method: `${this.constructor.name}.start() - started`,
+      this.logger.log({
+        method: `${this.constructor.name}.start() - start`,
         worker_id: workerId,
         file_job_id: output.file_job.id,
       })
 
       await this.processFileJobUseCase.call(output)
 
-      Logger.warn({
+      const duration_ms = new Date().getTime() - start.getTime();
+
+      this.logger.log({
         method: `${this.constructor.name}.start() - ended`,
         worker_id: workerId,
         file_job_id: output.file_job.id,
+        duration_ms
       })
     } catch (error) {
       const unexpected_error = !(error instanceof DomainError)

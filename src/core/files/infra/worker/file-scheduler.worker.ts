@@ -18,12 +18,21 @@ export class FileSchedulerWorker implements OnModuleInit {
   }
 
   private async start() {
+    const workers = Array.from(
+      { length: 5 },
+      () => this.processLoop()
+    )
+   
+    await Promise.all(workers)
+  }
+
+  private async processLoop() {
     while (true) {
       await this.setFileToQueued.call()
         .catch(async (e) => {
           await this.sleep(1000)
         })
-    }
+      }
   }
 
   async sleep(ms: number) {
