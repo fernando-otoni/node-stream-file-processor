@@ -3,9 +3,9 @@ OK - 2 - Verificar duplicidade pela hash
 OK - 3 - Criar status do processamento
 OK - 4 - Persistir jobs
   Parar de usar fila em memória.
-5 - Adicionar retry automático
-6 - Controlar concorrência do worker
-7 - Adicionar observabilidade
+OK - 5 - Adicionar retry automático
+OK - 6 - Controlar concorrência do worker
+OK - 7 - Adicionar observabilidade
   Logs
   tempo
   erro

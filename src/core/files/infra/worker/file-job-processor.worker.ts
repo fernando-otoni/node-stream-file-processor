@@ -1,10 +1,11 @@
-import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import ClaimAndSetFileJobToProcessingUseCase from "../../application/use-cases/file-job/claim-and-set-file-job-to-processing/claim-and-set-file-job-to-processing.use-case";
 import { FileJobStatusEnum } from "../../domain/enums/file-job-status.enum";
 import { ProcessFileJobUseCase } from "../../application/use-cases/file-job/process-file-job/process-file-job.use-case";
 import { AppConfigProvider } from "src/modules/config/app-config.interface";
 import { DomainError } from "src/core/shared/domain/interfaces/domain-error.interface";
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
+import { SystemMetricsProvider } from "src/core/shared/application/system-metrics.provider";
 
 @Injectable()
 export class FileJobProcessorWorker implements OnModuleInit {
@@ -12,7 +13,8 @@ export class FileJobProcessorWorker implements OnModuleInit {
     private readonly claimAndSetJobToProcessing: ClaimAndSetFileJobToProcessingUseCase,
     private readonly processFileJobUseCase: ProcessFileJobUseCase,
     private readonly appConfig: AppConfigProvider,
-    private readonly logger: LoggerProvider
+    private readonly logger: LoggerProvider,
+    private readonly metricsProvider: SystemMetricsProvider
   ) { }
 
   private concurrency: number = 0
@@ -24,7 +26,7 @@ export class FileJobProcessorWorker implements OnModuleInit {
 
     this.logger.log({
       method: `${this.constructor.name}.start()`,
-      concurrency: this.concurrency
+      concurrency: this.concurrency,
     })
   }
 
@@ -46,7 +48,7 @@ export class FileJobProcessorWorker implements OnModuleInit {
   private async processJob(workerId: number) {
     try {
       const start = new Date()
-      
+
       const output = await this.claimAndSetJobToProcessing.call({
         status: FileJobStatusEnum.PENDING
       })
@@ -55,6 +57,7 @@ export class FileJobProcessorWorker implements OnModuleInit {
         method: `${this.constructor.name}.start() - start`,
         worker_id: workerId,
         file_job_id: output.file_job.id,
+        system_info: { ...this.metricsProvider.all_metrics }
       })
 
       await this.processFileJobUseCase.call(output)

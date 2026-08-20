@@ -1,4 +1,4 @@
-import { Injectable, Logger, OnModuleInit } from "@nestjs/common";
+import { Injectable, OnModuleInit } from "@nestjs/common";
 import { SetFileToQueuedUseCase } from "../../application/use-cases/file/set-file-to-queued/set-file-to-queued.use-case";
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
 

@@ -5,6 +5,8 @@ import { UnitOfWork } from "./application/unit-of-work.interface";
 import { LoggerProvider } from "./application/logger.interface";
 import { AppLoggerImpl } from "./infra/logger/app-logger";
 import { ModulesModule } from "src/modules/modules.module";
+import { SystemMetricsProvider } from "./application/system-metrics.provider";
+import { SystemMetricsImpl } from "./infra/metrics/system-metrics";
 
 @Global()
 @Module({
@@ -20,12 +22,17 @@ import { ModulesModule } from "src/modules/modules.module";
     {
       provide: LoggerProvider,
       useClass: AppLoggerImpl
+    },
+    {
+      provide: SystemMetricsProvider,
+      useClass: SystemMetricsImpl
     }
   ],
   exports: [
     TransactionContext,
     UnitOfWork,
-    LoggerProvider
+    LoggerProvider,
+    SystemMetricsProvider
   ]
 })
 export class SharedModule {}
