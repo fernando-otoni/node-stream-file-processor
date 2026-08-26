@@ -5,6 +5,7 @@ import { ProcessFileJobUseCase } from "../../application/use-cases/file-job/proc
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
 import { AppConfigProvider } from "src/modules/config/app-config.interface";
 import { DomainError } from "src/core/shared/domain/interfaces/domain-error.interface";
+import { FileJobType } from "../../domain/enums/file-job-type.enum";
 
 @Injectable()
 export class FailedFileJobProcessor implements OnModuleInit {
@@ -48,7 +49,8 @@ export class FailedFileJobProcessor implements OnModuleInit {
       const start = new Date()
 
       const output = await this.claimNextFailedJob.call({
-        status: FileJobStatusEnum.FAILED
+        status: FileJobStatusEnum.FAILED,
+        type: FileJobType.HASH
       })
 
       this.logger.log({

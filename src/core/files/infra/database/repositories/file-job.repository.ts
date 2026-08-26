@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { FileJobEntity } from "../entities/file-jobs.entity";
-import { FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
+import { ClaimQuery, FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
 import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/transaction/base-repository";
 import { TransactionContext } from "src/core/shared/infra/persistence/typeorm/transaction/transaction-context";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
@@ -22,8 +22,8 @@ export class FileJobRepositoryImpl
     super(FileJobEntity, repository, transactionContext)
   }
 
-  claimFileJobByStatus(status: FileJobStatusEnum): Promise<FileJobEntity | null> {
-    return this.getRepository()
+  claimFileJobByStatus({ status, type, file_mimetype }: ClaimQuery): Promise<FileJobEntity | null> {
+    const query = this.getRepository()
       .createQueryBuilder('file_job')
       .setLock('pessimistic_write')
       .setOnLocked('skip_locked')
@@ -31,9 +31,21 @@ export class FileJobRepositoryImpl
       .where('file_job.status = :status', {
         status
       })
+      .andWhere('file_job.type <= :type', {
+        type
+      })
       .andWhere('file_job.attempts <= :attempts', {
         attempts: this.appConfig.fileJobMaxAttempts
       })
+    
+    
+    if(file_mimetype?.length) {
+      query.andWhere('file.mimetype IN (:...file_mimetype)', {
+        file_mimetype
+      })
+    }
+
+    return query
       .orderBy('file_job.created_at', 'DESC')
       .getOne()
   }

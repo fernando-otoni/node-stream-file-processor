@@ -11,6 +11,7 @@ import { TypeOrmRepository } from "src/core/shared/infra/persistence/typeorm/tra
 export class FileRepositoryImpl
   extends TypeOrmRepository<FileEntity>
   implements FileRepository {
+    
   constructor(
     @InjectRepository(FileEntity)
     repository: Repository<FileEntity>,
@@ -41,5 +42,20 @@ export class FileRepositoryImpl
 
   async findByHash(hash: string): Promise<FileEntity | null> {
     return await this.getRepository().findOneBy({ hash })
+  }
+
+  async claimCsvFile(): Promise<FileEntity | null> {
+    return this.getRepository()
+      .createQueryBuilder('file')
+      .setLock('pessimistic_write')
+      .setOnLocked('skip_locked')
+      .where('file.status = :status', {
+        status: FileStatusEnum.PROCESSED,
+      })
+      .andWhere('file.mimetype = :mimetype', {
+        mimetype: 'text/csv',
+      })
+      .orderBy('file.created_at', 'DESC')
+      .getOne()
   }
 }

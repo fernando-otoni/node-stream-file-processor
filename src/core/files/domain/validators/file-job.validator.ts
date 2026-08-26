@@ -3,6 +3,7 @@ import { FileJobStatusEnum } from "../enums/file-job-status.enum";
 import { FileJob } from "../aggregate/file-job.aggregate";
 import { ClassValidatorFields } from "src/core/shared/domain/validators/class-validator-fields";
 import { Notification } from "src/core/shared/domain/validators/notification";
+import { FileJobType } from "../enums/file-job-type.enum";
 
 class FileJobFields {
   @IsDefined({ groups: ['create'] })
@@ -17,6 +18,15 @@ class FileJobFields {
     message: 'Status must be a valid FileJogStatusEnum'
   })
   status: FileJobStatusEnum
+
+  @IsDefined({ groups: ['create'] })
+  @IsString({ groups: ['create'] })
+  @IsNotEmpty({ groups: ['create'] })
+  @IsEnum(FileJobType, {
+    groups: ['create'],
+    message: 'Type must be a valid FileJobType'
+  })
+  type: FileJobType
 
   constructor(aggregate: FileJob) {
     Object.assign(this, aggregate)

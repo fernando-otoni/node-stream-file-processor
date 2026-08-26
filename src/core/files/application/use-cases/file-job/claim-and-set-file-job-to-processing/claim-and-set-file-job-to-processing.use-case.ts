@@ -2,7 +2,7 @@ import { UseCase } from "src/core/shared/application/use-case.interface";
 import { ClaimAndSetFileJobToProcessingOutput } from "./claim-and-set-file-job-to-processing.output";
 import { UnitOfWork } from "src/core/shared/application/unit-of-work.interface";
 import { FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { File } from "src/core/files/domain/aggregate/file.aggregate";
 import { FileJob } from "src/core/files/domain/aggregate/file-job.aggregate";
 import { EntityValidationError } from "src/core/shared/domain/errors/entity-validation.error";
@@ -12,6 +12,7 @@ import { EntityNotFoundError } from "src/core/shared/domain/errors/entity-not-fo
 import { ClaimAndSetFileJobToProcessingInput } from "./claim-and-set-file-job-to-processing.input";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
+import { FileJobType } from "src/core/files/domain/enums/file-job-type.enum";
 
 @Injectable()
 export default class ClaimAndSetFileJobToProcessingUseCase 
@@ -25,13 +26,13 @@ export default class ClaimAndSetFileJobToProcessingUseCase
     private readonly logger: LoggerProvider
   ) {}
 
-  async call({ status }: ClaimAndSetFileJobToProcessingInput) {
+  async call({ status, type, file_mimetype }: ClaimAndSetFileJobToProcessingInput) {
     let file_job_aggregate: FileJob | undefined
     let file_aggregate: File | undefined
 
     try {
       return await this.unitOfWork.runInTransaction(async () => {
-        const { file_job, file } = await this.getNextJob(status)
+        const { file_job, file } = await this.getNextJob(status, type, file_mimetype)
   
         file_job_aggregate = await this.loadFileJobFromEntity(file_job)
         file_aggregate = await this.loadFileFromEntity(file)
@@ -54,8 +55,12 @@ export default class ClaimAndSetFileJobToProcessingUseCase
     }
   }
 
-  async getNextJob(status: FileJobStatusEnum) {
-    const fileJob = await this.fileJobRepository.claimFileJobByStatus(status)
+  async getNextJob(status: FileJobStatusEnum, type: FileJobType, file_mimetype?: string[]) {
+    const fileJob = await this.fileJobRepository.claimFileJobByStatus({ 
+      status, 
+      type,
+      file_mimetype
+    })
     if(!fileJob) {
       throw new EntityNotFoundError(FileJob)
     }

@@ -6,4 +6,8 @@ export enum FileStatusEnum {
   CANCELLED = 'cancelled',
   QUEUED = 'queued',
   DUPLICATE = 'duplicate',
+  HASHED = 'hashed',
+  EXTRACTING_DATA = 'extracting_data',
+  COMPLETED = 'completed',
+  INCOMPLETE = 'incomplete'
 }

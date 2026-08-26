@@ -1,11 +1,18 @@
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./files.entity";
+import { FileJobType } from "src/core/files/domain/enums/file-job-type.enum";
 
 @Entity('file_jobs')
 export class FileJobEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    type: 'enum',
+    enum: FileJobType
+  })
+  type: FileJobType
 
   @Column({
     type: 'enum',

@@ -53,6 +53,10 @@ import { ModulesModule } from "src/modules/modules.module";
       useClass: FileJobRepositoryImpl
     }
   ],
-  exports: [ClaimAndSetFileJobToProcessingUseCase]
+  exports: [
+    ClaimAndSetFileJobToProcessingUseCase, 
+    FileRepository,
+    FileJobRepository
+  ]
 })
 export class FilesModule { }

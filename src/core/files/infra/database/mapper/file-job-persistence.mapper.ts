@@ -6,6 +6,7 @@ export class FileJobPersistenceMapper {
     return {
       id: fileJob.id ?? null,
       file_id: fileJob.file_id,
+      type: fileJob.type,
       status: fileJob.status,
       attempts: fileJob.attempts,
       error: fileJob.error,

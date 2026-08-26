@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Relation, UpdateDateColumn } from "typeorm";
 import { FileStatusEnum } from "../../../domain/enums/file-status.enum";
 import { FileJobEntity } from "./file-jobs.entity";
+import { CsvHeaderEntity } from "src/core/csv-files/infra/database/entities/csv-header.entity";
 
 @Entity('files')
 export class FileEntity {
@@ -34,7 +35,7 @@ export class FileEntity {
       to: (value: number) => value,
       from: (value: string) => Number(value),
     },
-   })
+  })
   size: number;
 
   @Column({ 
@@ -51,6 +52,9 @@ export class FileEntity {
 
   @OneToOne(() => FileJobEntity, (job) => job.file)
   jobs: FileJobEntity
+
+  @OneToOne(() => CsvHeaderEntity, (csv_header) => csv_header.file)
+  csv_headers: CsvHeaderEntity[]
 
   @Column({
     nullable: true

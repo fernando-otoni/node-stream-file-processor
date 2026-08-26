@@ -94,7 +94,19 @@ export class File extends AggregateRoot {
     }
 
     this.hash = hash
-    this.status = FileStatusEnum.PROCESSED
+    this.status = FileStatusEnum.HASHED
+  }
+
+  toExtracting() {
+    this.status = FileStatusEnum.EXTRACTING_DATA
+  }
+
+  toCompleted() {
+    this.status = FileStatusEnum.COMPLETED
+  }
+
+  toIncomplete() {
+    this.status = FileStatusEnum.INCOMPLETE
   }
 
   isDuplicateOfFile(id: number) {
@@ -141,26 +153,6 @@ export class File extends AggregateRoot {
 
   hasErrors(): boolean {
     return this.notification.hasErrors()
-  }
-
-  toJSON(): FileEntity {
-    return {
-      id: this.id!,
-      field_name: this.field_name,
-      original_name: this.original_name,
-      encoding: this.encoding,
-      mimetype: this.mimetype,
-      path: this.path,
-      destination: this.destination,
-      file_name: this.file_name,
-      size: this.size,
-      hash: this.hash,
-      status: this.status,
-      duplicate_of_file_id: this.duplicate_of_file_id,
-      created_at: this.created_at,
-      updated_at: this.updated_at,
-      deleted_at: this.deleted_at,
-    }
   }
 
   toEntity(): FileEntity {

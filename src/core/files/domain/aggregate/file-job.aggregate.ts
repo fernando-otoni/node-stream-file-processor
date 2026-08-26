@@ -2,10 +2,12 @@ import { AggregateRoot } from "src/core/shared/domain/aggregate-root";
 import { FileJobStatusEnum } from "../enums/file-job-status.enum";
 import { FileJobValidatorFactory } from "../validators/file-job.validator";
 import { FileJobEntity } from "../entities/file-job.entity";
+import { FileJobType } from "../enums/file-job-type.enum";
 
 interface FileJobConstructorProps {
   id?: number | null
   file_id: number
+  type: FileJobType
   status?: FileJobStatusEnum
   attempts?: number
   error?: Record<string, any>
@@ -17,12 +19,14 @@ interface FileJobConstructorProps {
 
 interface FileJobCreateCommand {
   file_id: number
+  type: FileJobType
   status?: FileJobStatusEnum
 }
 
 export class FileJob extends AggregateRoot {
   id: number | null
   file_id: number
+  type: FileJobType
   status: FileJobStatusEnum
   attempts: number
   error?: Record<string, any>
@@ -36,6 +40,7 @@ export class FileJob extends AggregateRoot {
     this.id = props.id ?? null
     this.file_id = props.file_id
     this.attempts = props.attempts ?? 0
+    this.type = props.type
     this.status = props.status ?? FileJobStatusEnum.PENDING
     this.created_at = props.created_at ?? new Date()
     this.updated_at = props.updated_at ?? new Date()
@@ -72,7 +77,7 @@ export class FileJob extends AggregateRoot {
     this.status = FileJobStatusEnum.PROCESSING
   }
 
-  toDone() {
+  toCompleted() {
     if(this.status !== FileJobStatusEnum.PROCESSING) {
       this.notification.addError({
         field: 'status',
@@ -83,11 +88,17 @@ export class FileJob extends AggregateRoot {
     }
 
     this.finished_at = new Date()
-    this.status = FileJobStatusEnum.DONE
+    this.status = FileJobStatusEnum.COMPLETED
   }
 
   toFailed() {
     this.status = FileJobStatusEnum.FAILED
+
+    this.attempts += 1
+  }
+
+  toCancelled() {
+    this.status = FileJobStatusEnum.CANCELLED
 
     this.attempts += 1
   }
@@ -115,14 +126,11 @@ export class FileJob extends AggregateRoot {
     validator.validate(this.notification, this, fields)
   }
 
-  toJSON() {
-    return {}
-  }
-
   toEntity(): FileJobEntity {
     return {
       id: this.id,
       file_id: this.file_id,
+      type: this.type,
       status: this.status,
       attempts: this.attempts,
       error: this.error,

@@ -1,8 +1,7 @@
 export enum FileJobStatusEnum {
+  COMPLETED = 'completed',
   PENDING = 'pending',
-  QUEUED = 'queued',
   PROCESSING = 'processing',
-  DONE = 'done',
   FAILED = 'failed',
-  CANCELLED = 'cancelled'
+  CANCELLED = 'cancelled',
 }

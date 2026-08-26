@@ -5,4 +5,5 @@ export abstract class FileRepository {
   getNextPendingFile: () => Promise<FileEntity | null>
   findById: (id: number) => Promise<FileEntity | null>
   findByHash: (hash: string) => Promise<FileEntity | null>
+  claimCsvFile: () => Promise<FileEntity | null>
 }

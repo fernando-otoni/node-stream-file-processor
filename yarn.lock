@@ -2152,6 +2152,11 @@ cross-spawn@^7.0.3, cross-spawn@^7.0.6:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
+csv-parse@^7.0.2:
+  version "7.0.2"
+  resolved "https://pkgs.dev.azure.com/ti0489/33cd83b7-a44a-4f39-a52a-9a5db80f5d0c/_packaging/bank-feed/npm/registry/csv-parse/-/csv-parse-7.0.2.tgz"
+  integrity sha1-dv+RPVsH1WFw4HHrx4j1GiHksX8=
+
 dayjs@^1.11.20:
   version "1.11.21"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.21.tgz"

@@ -10,6 +10,7 @@ import { File } from "src/core/files/domain/aggregate/file.aggregate";
 import { EntityConflictError } from "src/core/shared/domain/errors/entity-conflict.error";
 import { UnitOfWork } from "src/core/shared/application/unit-of-work.interface";
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
+import { FileJobType } from "src/core/files/domain/enums/file-job-type.enum";
 
 @Injectable()
 export class SetFileToQueuedUseCase implements UseCase<void, void> {
@@ -62,7 +63,10 @@ export class SetFileToQueuedUseCase implements UseCase<void, void> {
   }
 
   async persistFileJob(file_id: number) {
-    const fileJob = FileJob.create({ file_id })
+    const fileJob = FileJob.create({ 
+      file_id,
+      type: FileJobType.HASH
+    })
 
     if (fileJob.hasErrors()) {
       this.logger.error({

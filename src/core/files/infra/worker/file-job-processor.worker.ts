@@ -6,6 +6,7 @@ import { AppConfigProvider } from "src/modules/config/app-config.interface";
 import { DomainError } from "src/core/shared/domain/interfaces/domain-error.interface";
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
 import { SystemMetricsProvider } from "src/core/shared/application/system-metrics.provider";
+import { FileJobType } from "../../domain/enums/file-job-type.enum";
 
 @Injectable()
 export class FileJobProcessorWorker implements OnModuleInit {
@@ -50,7 +51,8 @@ export class FileJobProcessorWorker implements OnModuleInit {
       const start = new Date()
 
       const output = await this.claimAndSetJobToProcessing.call({
-        status: FileJobStatusEnum.PENDING
+        status: FileJobStatusEnum.PENDING,
+        type: FileJobType.HASH
       })
 
       this.logger.log({
