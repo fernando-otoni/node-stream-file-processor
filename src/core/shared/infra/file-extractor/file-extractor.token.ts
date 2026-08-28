@@ -1,0 +1,1 @@
+export const FILE_EXTRACTORS = Symbol('FILE_EXTRACTORS')

@@ -10,6 +10,7 @@ import { CsvRowRepository } from "src/core/csv-files/domain/repositories/csv-row
 import { CsvHeaderRepository } from "src/core/csv-files/domain/repositories/csv-header.repository";
 import { ExtractDataFromCsvFile } from "./extract-data-from-csv-file.input";
 import { FileJobRepository } from "src/core/files/domain/repositories/file-job.repository";
+import { FileExtractorFactory } from "src/core/shared/infra/file-extractor/file-extractor.strategy";
 
 @Injectable()
 export class ExtractDataFromCsvFileUseCase implements UseCase<ExtractDataFromCsvFile, void> {
@@ -17,7 +18,8 @@ export class ExtractDataFromCsvFileUseCase implements UseCase<ExtractDataFromCsv
     private readonly logger: LoggerProvider,
     private readonly csvRowRepository: CsvRowRepository,
     private readonly csvHeaderRepository: CsvHeaderRepository,
-    private readonly fileJobRepository: FileJobRepository
+    private readonly fileJobRepository: FileJobRepository,
+    private readonly fileExtractor: FileExtractorFactory
   ) {}
 
   async call({ file, file_job }: ExtractDataFromCsvFile): Promise<void> {
@@ -96,18 +98,13 @@ export class ExtractDataFromCsvFileUseCase implements UseCase<ExtractDataFromCsv
     const csvHeaders: CsvHeader[] = []
     const csvRows: CsvRow[] = []
 
-    const parser = createReadStream(file_path).pipe(
-      parse({
-        columns: true,
-        skip_empty_lines: true,
-        trim: true,
-        delimiter: [';', ',']
-      })
-    )
+    const parser = createReadStream(file_path)
+
+    const extractor = this.fileExtractor.from('text/csv')
 
     let header = true
     let index = 0
-    for await (const row of parser) {
+    for await (const row of extractor.extract(parser)) {
       try {
         if(header) {
           const headers = this.validateAndGenerateHeaderAggregate(row, file_id)
