@@ -2,6 +2,10 @@ import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToO
 import { FileStatusEnum } from "../../../domain/enums/file-status.enum";
 import { FileJobEntity } from "./file-jobs.entity";
 import { CsvHeaderEntity } from "src/core/csv-files/infra/database/entities/csv-header.entity";
+import XlsxWorksheet from "src/core/xlsx-files/domain/aggregate/xlsx-worksheet.aggregate";
+import { XlsxWorksheetEntity } from "src/core/xlsx-files/infra/database/entities/xlsx-worksheet.entity";
+import { XlsxHeaderEntity } from "src/core/xlsx-files/infra/database/entities/xlsx-header.entity";
+import { XlsxRowEntity } from "src/core/xlsx-files/infra/database/entities/xlsx-row.entity";
 
 @Entity('files')
 export class FileEntity {
@@ -55,6 +59,15 @@ export class FileEntity {
 
   @OneToOne(() => CsvHeaderEntity, (csv_header) => csv_header.file)
   csv_headers: CsvHeaderEntity[]
+
+  @OneToOne(() => XlsxWorksheetEntity, (e) => e.file)
+  xlsx_worksheets: XlsxWorksheetEntity[]
+
+  @OneToOne(() => XlsxHeaderEntity, (e) => e.file)
+  xlsx_headers: XlsxHeaderEntity[]
+
+  @OneToOne(() => XlsxRowEntity, (e) => e.file)
+  xlsx_rows: XlsxRowEntity[]
 
   @Column({
     nullable: true

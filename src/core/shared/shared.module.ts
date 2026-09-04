@@ -11,6 +11,7 @@ import { CsvExtractor } from "./infra/file-extractor/mimetypes/csv.extractor";
 import { FileExtractor } from "./application/file-extractor.interface";
 import { FILE_EXTRACTORS } from "./infra/file-extractor/file-extractor.token";
 import { FileExtractorFactory } from "./infra/file-extractor/file-extractor.strategy";
+import { XlsxExtractor } from "./infra/file-extractor/mimetypes/xlsx.extractor";
 
 @Global()
 @Module({
@@ -33,15 +34,19 @@ import { FileExtractorFactory } from "./infra/file-extractor/file-extractor.stra
     },
 
     CsvExtractor,
+    XlsxExtractor,
     {
       provide: FILE_EXTRACTORS,
       useFactory: (
-        csvExtractor: CsvExtractor
+        csvExtractor: CsvExtractor,
+        xlsxExtractor: XlsxExtractor
       ): FileExtractor[] => [
-        csvExtractor
+        csvExtractor,
+        xlsxExtractor
       ],
       inject: [ 
-        CsvExtractor
+        CsvExtractor,
+        XlsxExtractor
       ]
     },
     {

@@ -1,25 +1,26 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ExtractDataFromCsvFileUseCase } from "../../application/use-cases/extract-data-from-csv-file/extract-data-from-csv-file.use-case";
-import { LoggerProvider } from "src/core/shared/application/logger.interface";
-import { DomainError } from "src/core/shared/domain/interfaces/domain-error.interface";
+import { ExtractDataFromXlsxFileUseCase } from "../../application/use-cases/extract-data-from-xlsx-file/extract-data-from-xlsx-file.use-case";
 import ClaimAndSetFileJobToProcessingUseCase from "src/core/files/application/use-cases/file-job/claim-and-set-file-job-to-processing/claim-and-set-file-job-to-processing.use-case";
 import { FileJobStatusEnum } from "src/core/files/domain/enums/file-job-status.enum";
 import { FileJobType } from "src/core/files/domain/enums/file-job-type.enum";
+import { LoggerProvider } from "src/core/shared/application/logger.interface";
+import { DomainError } from "src/core/shared/domain/interfaces/domain-error.interface";
 import { SystemMetricsProvider } from "src/core/shared/application/system-metrics.provider";
 
 @Injectable()
-export class ExtractCsvFileProcessorWorker implements OnModuleInit {
+export class ExtractXlsxFileProcessorWorker implements OnModuleInit {
   constructor(
     private readonly claimAndSetFileJobToProcessing: ClaimAndSetFileJobToProcessingUseCase,
-    private readonly extractDataFromCsvFile: ExtractDataFromCsvFileUseCase,
+    private readonly extractDataFromXlsx: ExtractDataFromXlsxFileUseCase,
     private readonly logger: LoggerProvider,
     private readonly metricsProvider: SystemMetricsProvider
-  ) { }
+
+  ) {}
 
   concurrency = 4
 
   onModuleInit() {
-    this.start() 
+    this.start()
 
     this.logger.log({
       method: `${this.constructor.name}.start()`,
@@ -37,19 +38,19 @@ export class ExtractCsvFileProcessorWorker implements OnModuleInit {
   }
 
   private async processLoop(workerId: number) {
-    while(true) {
+    while (true) {
       await this.processJob(workerId)
     }
   }
 
-  private async processJob(workerId: number) {
+  async processJob(workerId: number) {
     try {
       const start = new Date()
 
       const { file, file_job } = await this.claimAndSetFileJobToProcessing.call({
         status: FileJobStatusEnum.PENDING,
         type: FileJobType.EXTRACT_DATA,
-        file_mimetype: ['text/csv']
+        file_mimetype: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
       })
 
       this.logger.log({
@@ -59,9 +60,9 @@ export class ExtractCsvFileProcessorWorker implements OnModuleInit {
         system_info: { ...this.metricsProvider.all_metrics }
       })
 
-      await this.extractDataFromCsvFile.call({ file, file_job })
-
       const duration_ms = new Date().getTime() - start.getTime();
+  
+      await this.extractDataFromXlsx.call({ file, file_job })
 
       this.logger.log({
         method: `${this.constructor.name}.start() - ended`,
@@ -80,7 +81,7 @@ export class ExtractCsvFileProcessorWorker implements OnModuleInit {
         })
       }
 
-      await this.sleep(1000)
+      await this.sleep(1000)  
     }
   }
 

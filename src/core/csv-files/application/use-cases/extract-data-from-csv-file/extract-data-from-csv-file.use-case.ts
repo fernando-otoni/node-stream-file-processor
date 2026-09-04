@@ -3,7 +3,6 @@ import CsvHeader from "src/core/csv-files/domain/aggregate/csv-header.aggregate"
 import { LoggerProvider } from "src/core/shared/application/logger.interface";
 import { Injectable } from "@nestjs/common";
 import { createReadStream } from "fs";
-import { parse } from "csv-parse";
 import { EntityValidationError } from "src/core/shared/domain/errors/entity-validation.error";
 import CsvRow from "src/core/csv-files/domain/aggregate/csv-row.aggregate";
 import { CsvRowRepository } from "src/core/csv-files/domain/repositories/csv-row.repository";
@@ -48,6 +47,7 @@ export class ExtractDataFromCsvFileUseCase implements UseCase<ExtractDataFromCsv
   
       this.logger.log({
         method: `${this.constructor.name}.call()`,
+        file_id: file.id,
         message: 'Header saved'
       })
   
@@ -114,12 +114,14 @@ export class ExtractDataFromCsvFileUseCase implements UseCase<ExtractDataFromCsv
           continue
         }
     
-        const data = Object.values(row).map(value => value ?? '') as string[]
+        const rowValues = Object.
+          values(row)
+          .map(value => value ?? '') as string[]
   
         const rowAggregate = CsvRow.create({
           file_id,
           row: index,
-          data
+          data: rowValues
         })
 
         if(rowAggregate.hasError()) {

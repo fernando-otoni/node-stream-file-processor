@@ -5,6 +5,7 @@ import { SharedModule } from './core/shared/shared.module';
 import { ModulesModule } from './modules/modules.module';
 import { ConfigModule } from '@nestjs/config';
 import { CsvFilesModule } from './core/csv-files/csv-files.module';
+import { XlsxFilesModule } from './core/xlsx-files/xlsx-files.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { CsvFilesModule } from './core/csv-files/csv-files.module';
     FilesModule,
     SharedModule,
     ModulesModule,
-    CsvFilesModule
+    CsvFilesModule,
+    XlsxFilesModule
   ],
   controllers: [],
   providers: [],

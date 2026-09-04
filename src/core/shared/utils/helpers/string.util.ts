@@ -1,7 +1,13 @@
 export class StringUtils {
-  static removeSpecialCharacters(value: string): string {
-    return value?.normalize('NFD')
+  static removeSpecialCharacters(input: string, remove_empty_spaces = true): string {
+    let result = String(input)
+      ?.normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
-      .replace(' ', '_');
+
+    if (remove_empty_spaces) {
+      result = result.replaceAll(' ', '_');
+    }
+
+    return result
   }
 }

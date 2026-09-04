@@ -5,8 +5,8 @@ import { Readable } from "stream";
 
 @Injectable()
 export class CsvExtractor implements FileExtractor {
-  async *extract(file: Readable): AsyncIterable<Record<string, string>> {
-    const parser = file.pipe(
+  async *extract(readable: Readable): AsyncIterable<Record<string, string>> {
+    const parser = readable.pipe(
       parse({
         columns: true,
         skip_empty_lines: true,
